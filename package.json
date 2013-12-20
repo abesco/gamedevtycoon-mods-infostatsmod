@@ -1,0 +1,12 @@
+{
+    "id" : "InfoStatsMod-AbescoUG",
+    "name" : "Information and Statistics Module",
+    "version":"0.2.0",
+    "author":"Francesco Abbattista",
+    "url":"http://gamedevmods.com/index.php?action=downloads;sa=view;down=7",
+    "description" : "Expansion module that provides detailed information and statistics to games released, provides charts and analysis to game sales and financial themes.",
+    "main" : "./InfoStatsMod.js",
+    "dependencies" : {
+        "gdt-modAPI":"0.1.x"
+    }
+}

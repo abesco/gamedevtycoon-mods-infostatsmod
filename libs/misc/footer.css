@@ -1,0 +1,14 @@
+#InfoStatsModFooterOverlay {
+    background-color: #000;
+    color: #FFF;
+    padding:2px;
+    height:20px;
+}
+
+#InfoStatsModFooterOverlay p {
+    padding: 0 1em;
+}
+
+#InfoStatsModFooterOverlay a {
+    color: #FFF;
+}

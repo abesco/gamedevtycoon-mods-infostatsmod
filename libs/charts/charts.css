@@ -1,0 +1,64 @@
+        .chart-container {
+            border: 1px solid silver;
+        }
+
+        .chart-column div {
+            background-color: #666666;
+        }
+
+        .chart-column span {
+            display: none;
+            padding: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .chart-column:hover div {
+            background-color: #F60;
+        }
+
+        .chart-column:hover span {
+            display: block;
+            background-color: rgba(255, 255, 255, 0.6);
+            width: 100%;
+            text-align: center;
+        }
+
+        .chart-legend span {
+            display: block;
+            width: 100%;
+            border-left: 1px solid silver;
+            border-right: 1px solid silver;
+        }
+
+            /* Gradients */
+        .chart-container {
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DDDDDD', endColorstr='#FFFFFF');
+            background: -webkit-gradient(linear, left top, left bottom, from(#DDD), to(#FFF));
+            background: -moz-linear-gradient(top,  #DDD,  #FFF);
+            background-image: -o-linear-gradient(#DDD, #FFF);
+            background-image: linear-gradient(to bottom, #DDD, #FFF);
+        }
+
+        .chart-column div {
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#666666', endColorstr='#BBBBBB');
+            background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#BBB));
+            background: -moz-linear-gradient(top,  #666,  #BBB);
+            background-image: -o-linear-gradient(#666, #BBB);
+            background-image: linear-gradient(to bottom, #666, #BBB);
+        }
+
+        .chart-column:hover div {
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF6600', endColorstr='#FFAA00');
+            background: -webkit-gradient(linear, left top, left bottom, from(#F60), to(#FA0));
+            background: -moz-linear-gradient(top,  #F60,  #FA0);
+            background-image: -o-linear-gradient(#F60, #FA0);
+            background-image: linear-gradient(to bottom, #F60, #FA0);
+        }
+        
+        .chartsbar {
+            -moz-box-shadow: 0 0 5px #888;
+            -webkit-box-shadow: 0 0 5px#888;
+            box-shadow: 0 0 5px #888;
+        }

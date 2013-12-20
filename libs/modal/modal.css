@@ -1,0 +1,42 @@
+/**
+ * Author:      Matt Hinchliffe <www.maketea.co.uk>
+ * Modified:    16/04/2012
+ * Description: Simple jQuery modal window
+ * Example:
+ * <div id="modal-wrapper">
+ *     <div id="modal-content" />
+ *     <span id="modal-close" />
+ * </div>
+ * <div id="modal-overlay" />
+ */
+
+ /* Licensed under the terms of CC 3.0 */
+ /* http://creativecommons.org/licenses/by-sa/3.0/ */
+ 
+.statsMod-modal-overlay {
+	z-index:9000;
+	background:rgba(0, 0, 0, 0.25);
+}
+
+.statsMod-modal-wrapper {
+	z-index:9001;
+	background:#fff;
+	border-radius:15px;
+	-webkit-box-shadow:0 0 15px rgba(0, 0, 0, 0.25);
+	   -moz-box-shadow:0 0 15px rgba(0, 0, 0, 0.25);
+	        box-shadow:0 0 15px rgba(0, 0, 0, 0.25);
+}
+.statsMod-modal-content {
+	padding:2.5em 1em 1em;
+    font-size:11px;
+
+}
+.statsMod-modal-close {
+	position:absolute;
+	top:.5em;
+	right:1em;
+	z-index:320;
+	font-size:.75em;
+	cursor:pointer;
+}
+
