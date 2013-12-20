@@ -52,17 +52,17 @@ Notes:
 - This version is a development version and can differ in all of it's parts from the final version
 
 Changelog:
-[+] First public alpha release
-[+] UI menu integration through "Info & Stats..." button (as seen in CheatMod by kristoff1104 - thanks!)
-[+] Implementation of the "Release Details" view
-[+] Release Details: Sortable table for detail information display of all releases
-[+] Release Details: Display of selected game details upon row selection in the sortable game table
-[+] Release Details: Tab based selection of additional information
-[+] Release Details: Additional information - Reviews -> Display all magazines review incl. rating stars
-[+] Release Details: Additional information - Engine Specs -> Display all used engine parts for the selected game
-[+] Implementation of the "Sales Analysis" view
-[+] Sales Analysis: Basic implementation of horizontal animated charts displaying the revenues of the game
-[+] Implementation of the "Footer"
-[+] Footer: Optionally overlay footer that displays financial information and the best game ever during the course of the game (live update on every week)
-[+] Implementation of "Debug" functions (will be removed upon final release)
-[+] Debug: Toggle Pause 
+- First public alpha release
+- UI menu integration through "Info & Stats..." button (as seen in CheatMod by kristoff1104 - thanks!)
+- Implementation of the "Release Details" view
+- Release Details: Sortable table for detail information display of all releases
+- Release Details: Display of selected game details upon row selection in the sortable game table
+- Release Details: Tab based selection of additional information
+- Release Details: Additional information - Reviews -> Display all magazines review incl. rating stars
+- Release Details: Additional information - Engine Specs -> Display all used engine parts for the selected game
+- Implementation of the "Sales Analysis" view
+- Sales Analysis: Basic implementation of horizontal animated charts displaying the revenues of the game
+- Implementation of the "Footer"
+- Footer: Optionally overlay footer that displays financial information and the best game ever during the course of the game (live update on every week)
+- Implementation of "Debug" functions (will be removed upon final release)
+- Debug: Toggle Pause 
