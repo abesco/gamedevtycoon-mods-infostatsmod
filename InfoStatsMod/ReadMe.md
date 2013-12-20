@@ -2,24 +2,16 @@
 ####for GameDevTycoon####
 *************************************************************************************************
 
-Name:                 InfoStatsMod
-Description:          Provides detailed information and statistics to games released, provides charts and analysis to 
-                      game sales and financial themes.
-Copyright:            © 2013 Francesco Abbattista
-Url:                  http://www.abesco.de/
-Notes:                Originally inspired and partially based on techniques from the 
-                      expansion modules: Expansion Pack and CheatMod.
-Credits:              Big thanks and respect goes out to DzjengisKhan, LineLiar and kristof1104.
-                      ExpansionPack for GDT by DzjengisKhan, LineLiar
-                      CheatMod      for GDT by kristof1104
-                      
-*************************************************************************************************************************
-
-Version:              0.3.0
-Launch:               December 09th, 2013
-Last Update:          December 20th, 2013
-
-*************************************************************************************************************************
+- Project Information
+    - Name:         InfoStatsMod
+    - Description:  Provides detailed information and statistics to games released, provides charts and analysis to game sales and financial themes.
+    - Copyright:    © 2013 Francesco Abbattista
+    - Notes:        Originally inspired and partially based on techniques from the expansion modules: Expansion Pack and CheatMod.
+    - Credits:      Big thanks and respect goes out to DzjengisKhan, LineLiar and kristof1104. ExpansionPack for GDT by DzjengisKhan, LineLiar. CheatMod      for GDT by kristof1104
+- Version Information
+    - Latest:       0.3.0
+    - Launch:       December 09th, 2013
+    - Last Update:  December 20th, 2013
 
 **Using the following additional scripts:**
 
