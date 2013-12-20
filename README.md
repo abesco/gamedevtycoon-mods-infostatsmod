@@ -1,13 +1,15 @@
-InfoStatsMod Expansion Module for GameDevTycoon
-==============
+###InfoStatsMod Expansion Module ###
+####for GameDevTycoon####
+*************************************************************************************************
+
 **Provides detailed information and statistics to games released, provides charts and analysis **
 **to game sales and financial themes.**
 
 - Launch: 			December 09th, 2013
 - Last Update:  December 20th, 2013
 
-ChangeLog Version 0.3.0
---------------
+#####ChangeLog Version 0.3.0#####
+
 **Last Update:  December 20th, 2013**
 
 - Revised main module menu. 
@@ -23,8 +25,7 @@ ChangeLog Version 0.3.0
 - Released Games Analysis: Fixed engine specs tech number format to max 2 decimal places
 - Fixed an error encountered on startup when weekProceeded event was triggered without a best game - Thanks to SirEverard
 
-ChangeLog Version 0.2.0
---------------
+#####ChangeLog Version 0.2.0#####
 
 **Last Update:	December 19th, 2013**
 
@@ -45,8 +46,7 @@ ChangeLog Version 0.2.0
 - Footer: Best game now calculated using highest score and highest profit
 - Sales Analysis: Remove access to feature in published version until it has reached a usable state
 
-ChangeLog Version 0.1.1
---------------
+#####ChangeLog Version 0.1.1#####
 
 **Last Update:	December 10th, 2013**
 
