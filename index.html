@@ -13,6 +13,22 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <style>
+    	#tabs {
+	    	font-family: Lato,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	    	font-size: 14px;
+    	}
+    	#tabs ul {
+    		margin: 0; padding: 0;
+    		padding-left:5px;
+    		list-style-type:square;
+    	}
+    	
+    	#tabs ul li {
+				 
+				color:rgb(73, 73, 73);
+    	}	
+    </style>
     <script src="javascripts/jquery-10.2.js"></script>
     <script src="javascripts/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="javascripts/jquery.prettyPhoto.js"></script>
@@ -51,8 +67,8 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>InfoStatsMod Expansion</h1>
-        <p>InfoStatsMod Expansion for the game GameDevTycoon by Greenheartgames</p>
+        <h1>InfoStatsMod</h1>
+        <p>InfoStatsMod is an expansion module for the game GameDevTycoon by Greenheartgames that aims to provide additional information and statistics to various aspects of the game</p>
 
         <p class="view"><a href="https://github.com/abesco/gamedevtycoon-mods-infostatsmod">View the Project on GitHub <small>abesco/gamedevtycoon-mods-infostatsmod</small></a></p>
 
@@ -62,23 +78,13 @@
           <li><a href="https://github.com/abesco/gamedevtycoon-mods-infostatsmod/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/abesco/gamedevtycoon-mods-infostatsmod">View On <strong>GitHub</strong></a></li>
         </ul>
-      </header>
-      <section>
-        <h3>
-<a name="infostatsmod-expansion-module" class="anchor" href="#infostatsmod-expansion-module"><span class="octicon octicon-link"></span></a>InfoStatsMod Expansion Module</h3>
-
-<h4>
-<a name="for-gamedevtycoon" class="anchor" href="#for-gamedevtycoon"><span class="octicon octicon-link"></span></a>for GameDevTycoon</h4>
-
-<hr><p><strong>Provides detailed information and statistics to games released, provides charts and analysis **
-**to game sales and financial themes.</strong></p>
-
-<ul>
-<li>Launch:           December 09th, 2013</li>
-<li>Last Update:  December 22th, 2013</li>
-</ul>
+        
+        <hr>
+				Launch:           December 09th, 2013<br>
+				Last Update:  December 22th, 2013<br><br>
+				<hr>
 <h5>Current screenshots</h5>
-<hr>
+
 <div>
 <a href="images/screens/InfoAndStatsMod_Development_Screen_030_03.jpg" rel="prettyPhoto[pp_gal]" title="This is an the released games analysis window where games can be selected and detailed information displayed."><img src="images/screens/InfoAndStatsMod_Development_Screen_030_03.jpg" width="60" height="60" alt="Released Games Analysis Overview" /></a>
 <a href="images/screens/InfoAndStatsMod_Development_Screen_030_04.jpg" rel="prettyPhoto[pp_gal]" title="For each selected game a detailed sales analysis can be shown."><img src="images/screens/InfoAndStatsMod_Development_Screen_030_04.jpg" width="60" height="60" alt="Released Games detailed Sales Analysis" /></a>
@@ -91,20 +97,22 @@
 <a href="images/screens/InfoAndStatsMod_Development_Screen_031_06.jpg" rel="prettyPhoto[pp_gal]" title="Configuration options for the platform analysis section."><img src="images/screens/InfoAndStatsMod_Development_Screen_031_06.jpg" width="60" height="60" alt="Platform Analysis Configuration" /></a>
 <a href="images/screens/InfoAndStatsMod_Development_Screen_031_07.jpg" rel="prettyPhoto[pp_gal]" title="Configuration options for the released games section."><img src="images/screens/InfoAndStatsMod_Development_Screen_031_07.jpg" width="60" height="60" alt="Released Games Analysis Configuration" /></a>
 <a href="images/screens/InfoAndStatsMod_Development_Screen_031_08.jpg" rel="prettyPhoto[pp_gal]" title="Configuration options for the notification section."><img src="images/screens/InfoAndStatsMod_Development_Screen_031_08.jpg" width="60" height="60" alt="Notifications" /></a>
-</div>
+</div>        
+      </header>
+      <section>
+        <h3>Changelogs</h3>
+
 <hr>
 
 <div id="tabs">
 <ul>
-<li><a href="#fragment-1">0.3.1</a></li>
-<li><a href="#fragment-2">0.3.0</a></li>
-<li><a href="#fragment-3">0.2.0</a></li>
-<li><a href="#fragment-4">0.1.1</a></li>
+<li><a href="#tab-1"><strong>0.3.1</strong></a></li>
+<li><a href="#tab-2"><strong>0.3.0</strong></a></li>
+<li><a href="#tab-3"><strong>0.2.0</strong></a></li>
+<li><a href="#tab-4"><strong>0.1.1</strong></a></li>
 </ul>
-<div id="fragment-1">
-	<h5><a name="changelog-version-031" class="anchor" href="#changelog-version-031"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.3.1</h5>
-<p><strong>Last Update:  December 22th, 2013</strong></p>
-
+<div id="tab-1">
+<h5><a name="changelog-version-030" class="anchor" href="#changelog-version-031"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.3.1 (December 22th, 2013)</h5>
 <ul>
 <li>Released Games Analysis: New Data Column "Fans"</li>
 <li>Released Games Analysis: New Data Column "Sequel"</li>
@@ -123,11 +131,8 @@
 <li>Notifications: Configurable In-Game Notification when Best Game Ever changes</li>
 </ul>
 </div>
-<div id="fragment-2">
-	<h5><a name="changelog-version-030" class="anchor" href="#changelog-version-030"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.3.0</h5>
-
-<p><strong>Last Update:  December 20th, 2013</strong></p>
-
+<div id="tab-2">
+	<h5><a name="changelog-version-030" class="anchor" href="#changelog-version-030"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.3.0 (December 20th, 2013)</h5>
 <ul>
 <li>Revised main module menu. </li>
 <li>Implementation of the "Config" screen for "Released Games Analysis"</li>
@@ -143,19 +148,16 @@
 <li>Fixed an error encountered on startup when weekProceeded event was triggered without a best game - Thanks to SirEverard</li>
 </ul>
 </div>
-<div id="fragment-3">
-	<h5><a name="changelog-version-020" class="anchor" href="#changelog-version-020"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.2.0</h5>
+<div id="tab-3">
+<h5>Release Notes</h5>
+Works best on screen resolution with a width bigger than 1550 (w&gt;=1550)<br>
+Not localized, thus it is only available in english<br>
+This version is a development version and can differ in all of it's parts from the final version<br>
+Big thanks and respect goes out to DzjengisKhan, LineLiar and kristof1104 for their inspiring and helpful mods: <br>
+ExpansionPack for GDT by DzjengisKhan, LineLiar, CheatMod for GDT by kristof1104<br>
+<br>
+	<h5><a name="changelog-version-020" class="anchor" href="#changelog-version-020"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.2.0 (December 19th, 2013)</h5>
 
-<p><strong>Last Update:  December 19th, 2013</strong></p>
-
-<p><strong>Release Notes</strong></p>
-
-<ul>
-<li>This version works best on screen resolution with a width bigger than 1550 (w&gt;=1550)</li>
-<li>This version has not been localized, thus it is only available in english</li>
-<li>This version is a development version and can differ in all of it's parts from the final version</li>
-<li>Big thanks and respect goes out to DzjengisKhan, LineLiar and kristof1104 for their inspiring and helpful mods: ExpansionPack for GDT by DzjengisKhan, LineLiar, CheatMod for GDT by kristof1104</li>
-</ul><p><strong>Changelog</strong></p>
 
 <ul>
 <li>Almost complete reengineering of the code (using separate files and classes) - Still cleaning up and creating better structure</li>
@@ -169,19 +171,14 @@
 <li>Sales Analysis: Remove access to feature in published version until it has reached a usable state</li>
 </ul>
 </div>
-<div id="fragment-4">
-	<h5>
-<a name="changelog-version-011" class="anchor" href="#changelog-version-011"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.1.1</h5>
-
-<p><strong>Last Update:  December 10th, 2013</strong></p>
-
-<p><strong>Release Notes</strong></p>
-
-<ul>
-<li>This version works best on screen resolution with a width bigger than 1550 (w&gt;=1550)</li>
-<li>This version has not been localized, thus it is only available in english</li>
-<li>This version is a development version and can differ in all of it's parts from the final version</li>
-</ul><p><strong>Changelog</strong></p>
+<div id="tab-4">
+	<h5>Release Notes</h5>
+Works best on screen resolution with a width bigger than 1550 (w&gt;=1550)<br>
+Not localized, thus it is only available in english<br>
+This version is a development version and can differ in all of it's parts from the final version<br>
+<br>
+<h5>
+<a name="changelog-version-011" class="anchor" href="#changelog-version-011"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.1.1 (December 10th, 2013)</h5>
 
 <ul>
 <li>First public alpha release</li>
