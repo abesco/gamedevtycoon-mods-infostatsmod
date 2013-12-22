@@ -6,7 +6,27 @@
 **to game sales and financial themes.**
 
 - Launch: 			December 09th, 2013
-- Last Update:  December 20th, 2013
+- Last Update:  December 22th, 2013
+
+#####ChangeLog Version 0.3.1#####
+
+**Last Update:  December 22th, 2013**
+
+- Released Games Analysis: New Data Column "Fans"
+- Released Games Analysis: New Data Column "Sequel"
+- Released Games Analysis: New Data Column "Publisher" (This does not work as expected)
+- Released Games Analysis: Fixed income / profit data display that was not considering other factors. Now correct values are displayed (i.e. when using a publisher), furthermore this is sync with the game.
+- Released Games Analysis: Fixed errors when displaying game details for screen resolutions with a width lower that 1550
+- Implementation of the "Platform Analysis" section
+- Implementation of the "Platform Details" screen
+- Platform Analysis: Platform are displayed filtered by the following categories : Licensed Platforms, Unlicensed Platforms, Discontinued Platforms, Released Platforms
+- Platform Analysis: Platform selection can be displayed without image or with small, medium or large images
+- Platform Analysis: Platform selection can be displayed 1, 2 or 3 columned
+- Implementation of the "Platform Details Config" screen
+- Platform Analysis Config: Show Image, Image Size and Columns can be configured. This controls the behaviour of the Platform Details selector
+- Footer: Friendly date (with day and month name and full year)
+- Implementation of the "Notifications" screen
+- Notifications: Configurable In-Game Notification when Best Game Ever changes
 
 #####ChangeLog Version 0.3.0#####
 
