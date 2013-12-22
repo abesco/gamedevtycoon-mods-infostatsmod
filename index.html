@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>InfoStatsMod Expansion by abesco</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>InfoStatsMod Expansion</h1>
+          <h2>InfoStatsMod Expansion for the game GameDevTycoon by Greenheartgames</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/abesco/gamedevtycoon-mods-infostatsmod/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/abesco/gamedevtycoon-mods-infostatsmod/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/abesco/gamedevtycoon-mods-infostatsmod" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h3>
+<a name="infostatsmod-expansion-module" class="anchor" href="#infostatsmod-expansion-module"><span class="octicon octicon-link"></span></a>InfoStatsMod Expansion Module</h3>
+
+<h4>
+<a name="for-gamedevtycoon" class="anchor" href="#for-gamedevtycoon"><span class="octicon octicon-link"></span></a>for GameDevTycoon</h4>
+
+<hr><p><strong>Provides detailed information and statistics to games released, provides charts and analysis **
+**to game sales and financial themes.</strong></p>
+
+<ul>
+<li>Launch:           December 09th, 2013</li>
+<li>Last Update:  December 22th, 2013</li>
+</ul><h5>
+<a name="changelog-version-031" class="anchor" href="#changelog-version-031"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.3.1</h5>
+
+<p><strong>Last Update:  December 22th, 2013</strong></p>
+
+<ul>
+<li>Released Games Analysis: New Data Column "Fans"</li>
+<li>Released Games Analysis: New Data Column "Sequel"</li>
+<li>Released Games Analysis: New Data Column "Publisher" (This does not work as expected)</li>
+<li>Released Games Analysis: Fixed income / profit data display that was not considering other factors. Now correct values are displayed (i.e. when using a publisher), furthermore this is sync with the game.</li>
+<li>Released Games Analysis: Fixed errors when displaying game details for screen resolutions with a width lower that 1550</li>
+<li>Implementation of the "Platform Analysis" section</li>
+<li>Implementation of the "Platform Details" screen</li>
+<li>Platform Analysis: Platform are displayed filtered by the following categories : Licensed Platforms, Unlicensed Platforms, Discontinued Platforms, Released Platforms</li>
+<li>Platform Analysis: Platform selection can be displayed without image or with small, medium or large images</li>
+<li>Platform Analysis: Platform selection can be displayed 1, 2 or 3 columned</li>
+<li>Implementation of the "Platform Details Config" screen</li>
+<li>Platform Analysis Config: Show Image, Image Size and Columns can be configured. This controls the behaviour of the Platform Details selector</li>
+<li>Footer: Friendly date (with day and month name and full year)</li>
+<li>Implementation of the "Notifications" screen</li>
+<li>Notifications: Configurable In-Game Notification when Best Game Ever changes</li>
+</ul><h5>
+<a name="changelog-version-030" class="anchor" href="#changelog-version-030"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.3.0</h5>
+
+<p><strong>Last Update:  December 20th, 2013</strong></p>
+
+<ul>
+<li>Revised main module menu. </li>
+<li>Implementation of the "Config" screen for "Released Games Analysis"</li>
+<li>Footer: Fixed calculation of best game (max profit was not passed correctly)</li>
+<li>Footer: Fixed score format (use avg) in the footer for game compliancy</li>
+<li>Released Games Analysis Config: Column Visibility with the option to save changes (save game relevant)</li>
+<li>Released Games Analysis: Game compliant number value formatting on costs</li>
+<li>Released Games Analysis: Datalist columns structure enhanced</li>
+<li>Released Games Analysis: Datalist columns are now dynamic and can be controlled within the mod</li>
+<li>Released Games Analysis: Games now only appear in the list when sales starts</li>
+<li>Released Games Analysis: Revised platform images. Now bigger size with nice label and dynamic image scale depending on platform count.</li>
+<li>Released Games Analysis: Fixed engine specs tech number format to max 2 decimal places</li>
+<li>Fixed an error encountered on startup when weekProceeded event was triggered without a best game - Thanks to SirEverard</li>
+</ul><h5>
+<a name="changelog-version-020" class="anchor" href="#changelog-version-020"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.2.0</h5>
+
+<p><strong>Last Update:  December 19th, 2013</strong></p>
+
+<p><strong>Release Notes</strong></p>
+
+<ul>
+<li>This version works best on screen resolution with a width bigger than 1550 (w&gt;=1550)</li>
+<li>This version has not been localized, thus it is only available in english</li>
+<li>This version is a development version and can differ in all of it's parts from the final version</li>
+<li>Big thanks and respect goes out to DzjengisKhan, LineLiar and kristof1104 for their inspiring and helpful mods: ExpansionPack for GDT by DzjengisKhan, LineLiar, CheatMod for GDT by kristof1104</li>
+</ul><p><strong>Changelog</strong></p>
+
+<ul>
+<li>Almost complete reengineering of the code (using separate files and classes) - Still cleaning up and creating better structure</li>
+<li>Removed charts library in favour of the MIT licensed FLOT library to create better looking graphs and plots</li>
+<li>Released Games Analysis: Sales Graphical Analysis including weekly points</li>
+<li>Released Games Analysis: Tooltip on weekly sales points to exactly get income of a certain week (makes looking for profitable weeks easier)</li>
+<li>Released Games Analysis: Selected Tab remains selected when selecting different items in the data table list</li>
+<li>Released Games Analysis: Table sorting reviewed and fully implemented now</li>
+<li>Footer: Game compliant number value formatting</li>
+<li>Footer: Best game now calculated using highest score and highest profit</li>
+<li>Sales Analysis: Remove access to feature in published version until it has reached a usable state</li>
+</ul><h5>
+<a name="changelog-version-011" class="anchor" href="#changelog-version-011"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.1.1</h5>
+
+<p><strong>Last Update:  December 10th, 2013</strong></p>
+
+<p><strong>Release Notes</strong></p>
+
+<ul>
+<li>This version works best on screen resolution with a width bigger than 1550 (w&gt;=1550)</li>
+<li>This version has not been localized, thus it is only available in english</li>
+<li>This version is a development version and can differ in all of it's parts from the final version</li>
+</ul><p><strong>Changelog</strong></p>
+
+<ul>
+<li>First public alpha release</li>
+<li>UI menu integration through "Info &amp; Stats..." button (as seen in CheatMod by kristoff1104 - thanks!)</li>
+<li>Implementation of the "Release Details" view</li>
+<li>Release Details: Sortable table for detail information display of all releases</li>
+<li>Release Details: Display of selected game details upon row selection in the sortable game table</li>
+<li>Release Details: Tab based selection of additional information</li>
+<li>Release Details: Additional information - Reviews -&gt; Display all magazines review incl. rating stars</li>
+<li>Release Details: Additional information - Engine Specs -&gt; Display all used engine parts for the selected game</li>
+<li>Implementation of the "Sales Analysis" view</li>
+<li>Sales Analysis: Basic implementation of horizontal animated charts displaying the revenues of the game</li>
+<li>Implementation of the "Footer"</li>
+<li>Footer: Optionally overlay footer that displays financial information and the best game ever during the course of the game (live update on every week)</li>
+<li>Implementation of "Debug" functions (will be removed upon final release)</li>
+<li>Debug: Toggle Pause </li>
+</ul>
+        </section>
+
+        <footer>
+          InfoStatsMod Expansion is maintained by <a href="https://github.com/abesco">abesco</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
