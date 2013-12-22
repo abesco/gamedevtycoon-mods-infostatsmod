@@ -11,9 +11,9 @@ Credits:              Big thanks and respect goes out to DzjengisKhan, LineLiar 
                       ExpansionPack for GDT by DzjengisKhan, LineLiar
                       CheatMod      for GDT by kristof1104
 **********************************************************************************************************************************************************
-Version:              0.3.0
+Version:              0.3.1
 Launch:               December 09th, 2013
-Last Update:          December 20th, 2013
+Last Update:          December 22th, 2013
 **********************************************************************************************************************************************************
 
 Using the following additional scripts:
@@ -38,6 +38,11 @@ modal.js              Name:       Simple jQuery modal window
                       Copyright:  Matt Hinchliffe <www.maketea.co.uk>
                       License:    Licensed under the terms of CC 3.0 (http://creativecommons.org/licenses/by-sa/3.0/)
 **********************************************************************************************************************************************************
+image-picker.js       Name:       Image Picker
+                      Version:    0.1.7
+                      Copyright:  Rodrigo Vera https://github.com/rvera/image-picker
+                      License:    MIT License, https://github.com/rvera/image-picker/blob/master/LICENSE
+**********************************************************************************************************************************************************
 footer.js             Name:       Constant Footer
                       Version:    1.0.0
                       Copyright:  © 2008 Steve Fenton, Modifications for this module © 2013 Francesco Abbattista
@@ -48,28 +53,39 @@ footer.js             Name:       Constant Footer
 
 var InfoStatsModAbescoUG = {};
 (function () {
-    // Include all required script files at runtime
-    // Note: I feel this is a better approach instead of including these files
-    //       within the .json files (I sometimes got some inclusion errors and alike)
-    var jslibs = ['Config', 'Utils', 'Footer', 'ReleasedGames', 'Analysis', 'Core']
-    $.each(jslibs, function(key, value){
-        var $jsdiv = $('body').find('#InfoStatsModResources');
-        if ($jsdiv == null){
-            $jsdiv = $(document.createElement('div'));
-            $jsdiv.attr('id','InfoStatsModResources');
-            $('body').append($jsdiv);
-        }
+    try {
+        // Include all required script files at runtime
+        // Note: I feel this is a better approach instead of including these files
+        //       within the .json files (I sometimes got some inclusion errors and alike)
+        var jslibs = ['Config', 'Utils', 'Footer', 'ReleasedGames', 'Analysis', 'Platforms', 'Notifications', 'Core']
+        $.each(jslibs, function(key, value){
+            var $jsdiv = $('body').find('#InfoStatsModResources');
+            if ($jsdiv == null){
+                $jsdiv = $(document.createElement('div'));
+                $jsdiv.attr('id','InfoStatsModResources');
+                $('body').append($jsdiv);
+            }
+            
+            var jsfile = './mods/InfoStatsMod/source/InfoStatsMod_' + value + '.js';
+            var $jstag = $(document.createElement('script'));
+                $jstag.attr('src',jsfile).appendTo($jstag);
+            
+        });
         
-        var jsfile = './mods/InfoStatsMod/source/InfoStatsMod_' + value + '.js';
-        var $jstag = $(document.createElement('script'));
-            $jstag.attr('src',jsfile).appendTo($jstag);
+        // Prepare the module
+        var instance            = InfoStatsModAbescoUG;
+        this.Core               = new InfoStatsModAbescoUG_Core();
         
-    });
-    
-    // Prepare the module
-    var instance            = InfoStatsModAbescoUG;
-    this.Core               = new InfoStatsModAbescoUG_Core();
-    
-    // Setup the module and start
-    this.Core.setup();
+        // Setup the module and start
+        this.Core.setup();
+        
+
+                
+    }
+    catch(e){
+        alert('An exception occured in the InfoStatsMod Expansion!\r\n\r\n'+e.message);
+    }
+    finally {
+        
+    }
 })();

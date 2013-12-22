@@ -45,6 +45,27 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
           alert(out);
       };
       
+    this.printObjectMemberNamesAsAlert = function(o) {
+          var out = '';
+          for (var p in o) {
+            out += p + ', ';
+            // out += p +'\n';
+          }
+          alert(out);
+      };
+     
+     this.printObjectMemberNamesInCommonDialog = function(o) {
+          var out = '';
+          for (var p in o) {
+            out += p + ', ';
+            // out += p +'\n';
+          }
+          $( "#infostatsmod-common-dialog" ).text(out);
+          $( "#infostatsmod-common-dialog" ).show();
+     };
+     
+     
+         
     // Function for quick creating a new table row element
     this.getNewTableRowElement = function(css, content){
             var el = $(document.createElement('tr'));
@@ -269,5 +290,132 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
     {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     };    
+    
+    this.isPlatformLicensed = function(platform) {
+        var company = GameManager.company;
+        var licensedPlatforms = company.licencedPlatforms;
         
+        if ( licensedPlatforms == null || licensedPlatforms.length < 1) { return false; }
+        
+        for(var i = 0; i < licensedPlatforms.length; i++){
+            if ( platform.id == licensedPlatforms[i].id ){
+                return true;
+            }
+        }
+        return false;
+        
+    };
+    
+    this.isPlatformReleased = function(platform) {
+        var curWeek         = parseInt(Math.floor(GameManager.company.currentWeek));
+        var publishWeek     = parseInt(Math.floor(Platforms.getPublishDate(platform)));
+      
+        return curWeek >= publishWeek;
+    };
+    
+    this.isPlatformAvailable = function(platform) {
+        var curWeek         = parseInt(Math.floor(GameManager.company.currentWeek));
+        var retireWeek      = parseInt(Math.floor(Platforms.getRetireDate(platform)));
+        var publishWeek     = parseInt(Math.floor(Platforms.getPublishDate(platform)));
+
+        // alert("curWeek = " + curWeek + " - retireWeek = " + retireWeek + " - weekpublishWeekRetirePlatform = " + publishWeek);
+        
+        return curWeek >= publishWeek && curWeek <= retireWeek;
+    };
+    
+    this.isPlatformDiscontinued = function(platform) {
+        var curWeek         = parseInt(Math.floor(GameManager.company.currentWeek));
+        var retireWeek      = parseInt(Math.floor(Platforms.getRetireDate(platform)));
+        var publishWeek     = parseInt(Math.floor(Platforms.getPublishDate(platform)));
+        
+        return curWeek >= retireWeek;        
+    };
+    
+    this.getRealGameReleaseAsIsoDate = function(game) {
+        function preFillNumberWithZeros(a) {
+            return 10 > a ? "0" + a : a
+        };
+
+        var releaseDate     = GameManager.company.getDate(game.releaseWeek);
+        var releaseYear     = releaseDate.year + 1979;
+        var releaseMonth    = releaseDate.month;
+        var releaseWeek     = releaseDate.week;
+        var releaseDay      = (releaseWeek * 7) - 6;
+        // var releaseDateStr  = _utils.formatMoney(releaseDay,0,"","") + ". " + monthNames[releaseMonth] + " " + releaseYear;
+        var releaseDateObj  = new Date(releaseYear, releaseMonth, releaseDay);
+        return releaseDateObj.getUTCFullYear() + "-" + preFillNumberWithZeros(releaseDateObj.getUTCMonth() + 1) + "-" + preFillNumberWithZeros(releaseDateObj.getUTCDate()); 
+    };
+    
+    this.getRealDateAsIsoDate = function(week) {
+        function preFillNumberWithZeros(a) {
+            return 10 > a ? "0" + a : a
+        };
+        
+        week = parseInt(Math.floor(week));
+                    
+        var releaseDate     = GameManager.company.getDate(week);
+        var releaseYear     = releaseDate.year + 1979;
+        var releaseMonth    = releaseDate.month;
+        var releaseWeek     = releaseDate.week;
+        var releaseDay      = (releaseWeek * 7) - 6;
+        // var releaseDateStr  = _utils.formatMoney(releaseDay,0,"","") + ". " + monthNames[releaseMonth] + " " + releaseYear;
+        var releaseDateObj  = new Date(releaseYear, releaseMonth, releaseDay);
+        return releaseDateObj.getUTCFullYear() + "-" + preFillNumberWithZeros(releaseDateObj.getUTCMonth() + 1) + "-" + preFillNumberWithZeros(releaseDateObj.getUTCDate()); 
+    };      
+
+    this.getRealDateAsDate = function(week) {
+        week = parseInt(Math.floor(week));
+        
+        var releaseDate     = GameManager.company.getDate(week);
+        
+        var releaseYear     = releaseDate.year + 1979;
+        var releaseMonth    = releaseDate.month;
+        var releaseWeek     = releaseDate.week;
+        var releaseDay      = (releaseWeek * 7) - 6;
+        
+        // var releaseDateStr  = _utils.formatMoney(releaseDay,0,"","") + ". " + monthNames[releaseMonth] + " " + releaseYear;
+        return new Date(releaseYear, releaseMonth, releaseDay);
+        
+    };       
+    
+    this.getRealDateAsDateString = function(week) {
+        week = parseInt(Math.floor(week));
+        
+        var releaseDate = m.getRealDateAsDate(week);
+        var monthName   = m.getMonthName(releaseDate);
+        var dayName     = m.getDayName(releaseDate);
+        var year        = releaseDate.getFullYear();
+        var day         = releaseDate.getDate();
+        
+        return dayName + " " + day + ". " + monthName + " " + year;
+        
+    };      
+    
+    this.getMonthName = function(date) {
+        var m = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        return m[date.getMonth()];
+    }
+
+    this.getDayName = function(date) {
+        var d = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        return d[date.getDay()];
+    }
+    
+    this.getGuid = function() {
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000)
+                     .toString(16)
+                     .substring(1);
+        };
+
+        function guid() {
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                 s4() + '-' + s4() + s4() + s4();
+        }
+        
+        return guid();
+    };
+    
+
+    
 }

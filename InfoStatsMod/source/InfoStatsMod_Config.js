@@ -18,16 +18,45 @@ var InfoStatsModAbescoUG_Config = function() {
 
     this.dataStorage                = GDT.getDataStore(this.idDataStorage);
     
+    this.resetStorage = function() {
+        this.dataStorage.data.releasedGamesConfig   = null;    
+        this.dataStorage.data.platformsConfig       = null;    
+    };
+    
     this.saveReleasedGamesConfig    = function(dataListColumns) {
-        this.dataStorage.settings.releasedGamesConfig = {dataListColumns: dataListColumns};
+        this.dataStorage.data.releasedGamesConfig = {dataListColumns: dataListColumns};
     };
     
     this.loadReleasedGamesConfig    = function(){
-        if(this.dataStorage.settings.releasedGamesConfig == null){
+        if(this.dataStorage.data.releasedGamesConfig == null){
             return null;
         }
         
-        return this.dataStorage.settings.releasedGamesConfig.dataListColumns;
+        return this.dataStorage.data.releasedGamesConfig.dataListColumns;
     };
     
+    this.savePlatformsConfig    = function(showPlatformImages, platformImageSize, platformImageColumnCount) {
+        this.dataStorage.data.platformsConfig = {showPlatformImages: showPlatformImages, platformImageSize: platformImageSize, platformImageColumnCount: platformImageColumnCount};
+    };
+    
+    this.loadPlatformsConfig    = function(){
+        if(this.dataStorage.data.platformsConfig == null){
+            return null;
+        }
+        
+        return this.dataStorage.data.platformsConfig;
+    };
+    
+    this.saveNotifications = function(showBestGameNotifications, showReleaseDetailAvailableNotifications) {
+        this.dataStorage.data.notifications = {showBestGameNotifications: showBestGameNotifications, showReleaseDetailAvailableNotifications: showReleaseDetailAvailableNotifications};
+    };
+    
+    this.loadNotifications    = function(){
+        if(this.dataStorage.data.notifications == null){
+            return null;
+        }
+        
+        return this.dataStorage.data.notifications;
+    };
+        
 };

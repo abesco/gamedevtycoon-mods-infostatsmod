@@ -9,9 +9,9 @@
     - Notes:        Originally inspired and partially based on techniques from the expansion modules: Expansion Pack and CheatMod.
     - Credits:      Big thanks and respect goes out to DzjengisKhan, LineLiar and kristof1104. ExpansionPack for GDT by DzjengisKhan, LineLiar. CheatMod      for GDT by kristof1104
 - Version Information
-    - Latest:       0.3.0
+    - Latest:       0.3.1
     - Launch:       December 09th, 2013
-    - Last Update:  December 20th, 2013
+    - Last Update:  December 22th, 2013
 
 **Using the following additional scripts:**
 
@@ -35,6 +35,11 @@
     - Version:    <unknown>
     - Copyright:  Matt Hinchliffe <www.maketea.co.uk>
     - License:    Licensed under the terms of CC 3.0 (http://creativecommons.org/licenses/by-sa/3.0/)
+- image-picker.js       
+    - Name:       Image Picker
+    - Version:    0.1.7
+    - Copyright:  Rodrigo Vera https://github.com/rvera/image-picker
+    - License:    MIT License, https://github.com/rvera/image-picker/blob/master/LICENSE    
 - footer.js             
     - Name:       Constant Footer
     - Version:    1.0.0

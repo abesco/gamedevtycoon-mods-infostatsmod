@@ -73,26 +73,25 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 });        
                 
                 // Prepare the tabs widget
-                {
-                    var doc                 = $(document);
-                    var docWidth            = doc.width();
-                    var docHeight           = doc.height();
-                    var modalWindowWidth    = parseInt(docWidth * 0.9);
-                    var modalWindowHeight   = parseInt(docHeight * 0.9);
-                    var wrapperHeight       = modalWindowHeight - 10;
-                    var tableHeight         = wrapperHeight     - 120;
-                    var wrapperWidth        = modalWindowWidth  - 10;
-                    var tableWidth          = wrapperWidth      - 60;
+                var doc                 = $(document);
+                var docWidth            = doc.width();
+                var docHeight           = doc.height();
+                var modalWindowWidth    = parseInt(docWidth * 0.9);
+                var modalWindowHeight   = parseInt(docHeight * 0.9);
+                var wrapperHeight       = modalWindowHeight - 10;
+                var tableHeight         = wrapperHeight     - 120;
+                var wrapperWidth        = modalWindowWidth  - 10;
+                var tableWidth          = wrapperWidth      - 60;
 
-                    $( "#gamedetails-tabs" ).height(tableHeight - 246);
-                    $( "#gamedetails-tabs" ).css('overflow','auto');
-                    
-                    // auto-select proper tab (i.e. the last clicked tab)
-                    $('#gamedetails-tabs-' + (m.selectedTabIndex+1)).click();
-                } 
+                $( "#gamedetails-tabs" ).height(tableHeight - 246);
+                // $( "#gamedetails-tabs" ).css('overflow','auto');
+                
+                // auto-select proper tab (i.e. the last clicked tab)
+                $('#gamedetails-tabs-' + (m.selectedTabIndex+1)).click();
                 
                 // Crate the engine specs data list
                 m.createEngineSpecsDataList();
+                
             }
             
 
@@ -132,14 +131,15 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                             
                 // Show as popup
                 var centerX = (doc.width() / 2)     - 320;
-                var centerY = (doc.height() / 2)    - 240;
+                var centerY = 10; //(doc.height() / 2)    - 240;
+                
                 var $h = core.getGameDetailElement(game); 
                 var $gameDetailsModalWindowOverlay   = $(document.createElement('div'));
 
                 $gameDetailsModalWindowOverlay.attr('id', 'StatsModGameDetailsModalWindowOverlay');
                 $gameDetailsModalWindowOverlay.width('100%').height('100%');
 
-                var $gameDetailsModalWindowContainer = core.Utils.createModalDivElement('StatsModGameDetailsModalWindowContainer',640,480,function(){$gameDetailsModalWindowOverlay.hide();});
+                var $gameDetailsModalWindowContainer = core.Utils.createModalWindowAsDivElement('StatsModGameDetailsModalWindowContainer',640,480,function(){$gameDetailsModalWindowOverlay.hide();});
 
                 $gameDetailsModalWindowOverlay.css('zIndex','9010');
                 $gameDetailsModalWindowOverlay.css('background-color','black');
@@ -153,6 +153,7 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 $gameDetailsModalWindowContainer.css('-webkit-box-shadow','0 0 5px#888');
                 $gameDetailsModalWindowContainer.css('box-shadow','0 0 5px #888');
                 $gameDetailsModalWindowContainer.css('background-color','white');
+                $gameDetailsModalWindowContainer.css('font-size','11px');
                             
                 $gameDetailsModalWindowContainer.css('top',centerY);
                 $gameDetailsModalWindowContainer.css('left',centerX);
@@ -164,6 +165,36 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 $('body').append($gameDetailsModalWindowContainer);
                 $gameDetailsModalWindowOverlay.stop().fadeIn('slow');
                 $gameDetailsModalWindowContainer.stop().fadeIn('slow');
+                
+                $( "#gamedetails-tabs" ).tabs({
+                    select: function(event, ui){
+                        // Index of the selected tab
+                        m.selectedTabIndex = ui.index; // event.options.selected;
+                        $("#InfoStatsModGameSalesWeeklyFlotGraphTooltip").hide();
+                    },
+                    selected: m.selectedTabIndex
+                });        
+                
+                // Prepare the tabs widget
+                var doc                 = $(document);
+                var docWidth            = doc.width();
+                var docHeight           = doc.height();
+                var modalWindowWidth    = parseInt(docWidth * 0.9);
+                var modalWindowHeight   = parseInt(docHeight * 0.9);
+                var wrapperHeight       = modalWindowHeight - 10;
+                var tableHeight         = wrapperHeight     - 120;
+                var wrapperWidth        = modalWindowWidth  - 10;
+                var tableWidth          = wrapperWidth      - 60;
+
+                $( "#gamedetails-tabs" ).height(tableHeight - 180);
+                // $( "#gamedetails-tabs" ).css('overflow','auto');
+                
+                // auto-select proper tab (i.e. the last clicked tab)
+                $('#gamedetails-tabs-' + (m.selectedTabIndex+1)).click();
+                
+                // Crate the engine specs data list
+                m.createEngineSpecsDataList();         
+
             }
             
             
@@ -200,12 +231,19 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
             var doc                 = $(document);
             var docWidth            = doc.width();
             var docHeight           = doc.height();
-            var modalWindowWidth    = parseInt(docWidth * 0.9);
-            var modalWindowHeight   = parseInt(docHeight * 0.9);
+            var modalWindowWidth    = core.ModalWindowApi.getWidth()
+            var modalWindowHeight   = core.ModalWindowApi.getHeight();
             var wrapperHeight       = modalWindowHeight - 10;
-            var tableHeight         = wrapperHeight     - 500;
+            var tableHeight         = wrapperHeight     - 420;
             var wrapperWidth        = modalWindowWidth  - 10;
             var tableWidth          = wrapperWidth      - 60;
+            
+            if (docWidth >= 1550){
+                tableHeight         = wrapperHeight     - 500;
+            }
+            else {
+                tableHeight         = wrapperHeight     - 420;    
+            }
                             
             $('#InfoStatsModShowReleasedGamesEngineSpecsContainer').datalist({
                     caption                 : '', 
@@ -419,13 +457,18 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                     {name:'Units', type:'integer', width:80, align:'right', visible:true},
                     {name:'Price', type:'integer', width:40, align:'right', visible:true},
                     {name:'Income', type:'integer', width:90, align:'right', visible:true},
+                    // --> {name:'Total Income', type:'integer', width:90, align:'right', visible:true},
                     {name:'Costs', type:'integer', width:90, align:'right', visible:true},
                     {name:'Profit', type:'integer', width:90, align:'right', visible:true},
+                    // --> {name:'Total Profit', type:'integer', width:90, align:'right', visible:true},
+                    {name:'Fans', type:'integer', width:90, align:'right', visible:true},
                     {name:'Hype', type:'integer', width:40, align:'right', visible:true},
                     {name:'Rank', type:'integer', width:40, align:'right', visible:true},
                     {name:'Release Date', type:'date', width:90, align:'center', visible:true},
+                    {name:'Sequel', type:'string', width:100, align:'left', visible:true},
                     {name:'Topic', type:'string', width:100, align:'left', visible:true},
-                    {name:'Genre', type:'string', width:100, align:'left', visible:true}
+                    {name:'Genre', type:'string', width:100, align:'left', visible:true},
+                    {name:'Publisher', type:'string', width:100, align:'left', visible:true}
                    ];
         };
         
@@ -472,30 +515,77 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 case 'Price':
                 return game.unitPrice;
                 
-                case 'Income':
+                case 'Total Income':
                 return core.Utils.formatMoney(game.totalSalesCash, 0,".",".");    
                 
+                case 'Income':
+                return core.Utils.formatMoney(game.revenue, 0,".",".");    
+
                 case 'Costs':
                 return core.Utils.formatMoney(game.costs, 0,".",".");    
 
-                case 'Profit':
+                case 'Total Profit':
                 return core.Utils.formatMoney(game.totalSalesCash - game.costs, 0, ".", ".");
 
+                case 'Profit':
+                return core.Utils.formatMoney(game.revenue - game.costs, 0, ".", ".");
+
                 case 'Hype':
-                return game.hypePoints;
+                return core.Utils.formatMoney(game.hypePoints, 0, ",",".");
+                
+                case 'Publisher':
+//                var sss = "Id: ";
+//                    sss += game.featureLog[0].id;
+//                    sss += ", Type: ";
+//                    sss += game.featureLog[0].type;
+//                    sss += ", MissionType: ";
+//                    sss += game.featureLog[0].missionType;
+//                    sss += ", LastUpdate: ";
+//                    sss += game.featureLog[0].lastUpdate;
+//                    sss += ", Duration: ";
+//                    sss += game.featureLog[0].duration;
+//                    
+//                $.each(ProjectContracts.getAllContracts(), function (i, a) {
+//                    if ( a.id == "publisherContracts"){
+//                        // core.Utils.printObjectMemberNamesAsAlert(a);
+//                        try{
+//                            var contract = a.getContract(GameManager.company);
+//                            $.each(contract, function(j,b){
+//                                // alert(b.refNumber +  " -- " + game.id);
+//                                // core.Utils.printObjectMemberNamesAsAlert(b);
+//                            });
+//                        }
+//                        catch(err){
+//                            alert(err.message);
+//                        }
+//                        
+//                    }
+//                });
+                // core.Utils.printObjectMemberNamesAsAlert(GameManager.company.flags.contractspublisher);
+                return '';
+        
+                return core.Utils.formatMoney(game.hypePoints, 0, ",",".");
+
+                case 'Fans':
+                return core.Utils.formatMoney(Math.floor(game.fansChangeTarget), 0, ",", ".");
+
+                case 'Sequel':
+                
+                var sequelGameId = game.sequelTo;
+                if (sequelGameId){
+                    var sequelGame = GameManager.company.getGameById(game.sequelTo);
+                    if (sequelGame && sequelGame.id != game.id){
+                        return sequelGame.title;
+                    }
+                } 
+                
+                return '[none]';
                 
                 case 'Rank':
                 return game.topSalesRank;   
 
                 case 'Release Date':
-                    var releaseDate     = GameManager.company.getDate(game.releaseWeek);
-                    var releaseYear     = releaseDate.year + 1979;
-                    var releaseMonth    = releaseDate.month;
-                    var releaseWeek     = releaseDate.week;
-                    var releaseDay      = (releaseWeek * 7) - 6;
-                    // var releaseDateStr  = _utils.formatMoney(releaseDay,0,"","") + ". " + monthNames[releaseMonth] + " " + releaseYear;
-                    var releaseDateObj  = new Date(releaseYear, releaseMonth, releaseDay);
-                return releaseDateObj.getUTCFullYear() + "-" + preFillNumberWithZeros(releaseDateObj.getUTCMonth() + 1) + "-" + preFillNumberWithZeros(releaseDateObj.getUTCDate()); 
+                return core.Utils.getRealDateAsIsoDate(game.releaseWeek);
                 
                 case 'Topic':
                 return core.Utils.getTopicName(game);
@@ -600,7 +690,7 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
 
         m.getEngineSpecsDataListContainerElement = function(game) {
             var baseDiv = $(document.createElement('div'));
-                baseDiv.css({width: '100%', height: '100%', textAlign:'center'});
+                baseDiv.attr({id:'InfoStatsModEngineSpecsDataListContainerElement'}).css({width: '100%', height: '100%', textAlign:'center'});
             
             if (game == null || game.features == null || game.features.length < 1)
             {

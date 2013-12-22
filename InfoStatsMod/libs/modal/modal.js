@@ -237,6 +237,14 @@
             callback.call(this);
         }
     };
+    
+    ModalWindow.prototype.getWidth = function() {
+        return parseInt(this.wrapper.css('width').replace('px','').replace('%',''));
+    };
+
+    ModalWindow.prototype.getHeight= function() {
+        return parseInt(this.wrapper.css('height').replace('px','').replace('%',''));
+    };
 
     // jQuery plugin wrapper
     $.fn.modalWindow = function( options, namespace ) {

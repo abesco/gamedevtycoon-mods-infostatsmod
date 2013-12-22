@@ -16,6 +16,11 @@ var InfoStatsModAbescoUG_Core = function() {
     this.ReleasedGames  = new InfoStatsModAbescoUG_ReleasedGames(this);
     this.Analysis       = new InfoStatsModAbescoUG_Analysis(this);
     this.Footer         = new InfoStatsModAbescoUG_Footer(this);
+    this.Platforms      = new InfoStatsModAbescoUG_Platforms(this);
+    this.Notifications  = new InfoStatsModAbescoUG_Notifications(this);
+    
+    this.LastBestGame       = null;
+    this.AvailGameNotify   = null;
     
     // Init modal win objects
     var $modalWindowObj     = $('body').modalWindow({ zIndex: 9001, blur: false, overlay: true}, 'statsMod');
@@ -38,18 +43,33 @@ var InfoStatsModAbescoUG_Core = function() {
         m.DocumentBody.append('<div id="statsmodshowreleasedgames" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Release Details</div>');
         m.DocumentBody.append('<div id="statsmodconfigreleasedgames" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Config</div>');
         
+        m.DocumentBody.append('<div id="StatsModContainerLabel2" style="text-align:center;margin-left:50px;width: 450px">Platform Analysis</div>');
+        m.DocumentBody.append('<div id="statsmodshowplatforms" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Platform Details</div>');
+        m.DocumentBody.append('<div id="statsmodconfigplatforms" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Config</div>');
+
         // --> Disable on releases
         // --> m.DocumentBody.append('<div id="" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Sales Analysis</div>');
 
-        m.DocumentBody.append('<div id="StatsModContainerLabel2" style="text-align:center;margin-left:50px;width: 450px">Info Overlay Footer</div>');
+        m.DocumentBody.append('<div id="StatsModContainerLabel3" style="text-align:center;margin-left:50px;width: 450px">Miscellaneous</div>');
         m.DocumentBody.append('<div id="statsmodtogglefooter" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Toggle Footer</div>');
+        m.DocumentBody.append('<div id="statsmodnotifications" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Notifications</div>');
 
-        m.DocumentBody.append('<div id="StatsModContainerLabel3" style="text-align:center;margin-left:50px;width: 450px">Debug</div>');
+        m.DocumentBody.append('<div id="StatsModContainerLabel4" style="text-align:center;margin-left:50px;width: 450px">Debug</div>');
         m.DocumentBody.append('<div id="statsmodtogglepause" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Toggle Pause</div>');
+        m.DocumentBody.append('<div id="statsmodresetsettings" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Reset Configs</div>');
 
+        m.DocumentBody.append('<div id="StatsModContainerLabel5" style="text-align:center;margin-left:50px;width: 450px"><br><br>InfoStatsMod Version 0.3.1</div>');
+
+        m.DocumentBody.append('<div id="infostatmod-common-dialog" title="InfoStatsMod">');
+        m.DocumentBody.append('</div>');
+
+        
         m.Footer.setup();
-        m.Footer.setContent("InfoStatsMod Expansion - Version 0.3.0 - Written and developed by Francesco Abbattista - (c) 2013 Francesco Abbattista");
+        m.Footer.setContent("InfoStatsMod Expansion - Version 0.3.1 - Written and developed by Francesco Abbattista - (c) 2013 Francesco Abbattista");
         m.Footer.show();
+
+        $( "#infostatsmod-common-dialog" ).dialog();
+        $( "#infostatsmod-common-dialog" ).hide();
 
         // Attach events of interest
         // GDT.on(GDT.eventKeys.ui.dialogOpen, dialogOpen);
@@ -57,29 +77,50 @@ var InfoStatsModAbescoUG_Core = function() {
         // GDT.on(GDT.eventKeys.ui.contextMenuShowing, contextMenuShowing);
         // GDT.on(GDT.eventKeys.ui.beforeShowingNotification, contextMenuBeforeShow);
         GDT.on(GDT.eventKeys.gameplay.weekProceeded, m.weekProceeded);
-    }    
-     
+    };    
+
+          
      /* Event Handlers */
-    m.weekProceeded = function() {
+    this.weekProceeded = function(e) {
         try {
             // Update the footer overlay
-            var revenues = UI.getShortNumberString(m.getTotalRevenues());
-            var costs    = UI.getShortNumberString(m.getTotalCosts());
-            var profit   = UI.getShortNumberString(m.getTotalProfit());
+            m.Footer.updateContent(e.company);
+            
+            var config = m.Config.loadNotifications();
+            var showBestGameNotifications = config != null ? config.showBestGameNotifications : null;
+            var showReleaseDetailAvailableNotifications  = config != null ? config.showReleaseDetailAvailableNotifications : null; 
+            
+            if (showBestGameNotifications == null){
+                showBestGameNotifications = true;
+            }
+            if (showReleaseDetailAvailableNotifications == null){
+                showReleaseDetailAvailableNotifications = true;
+            }
+
             var bestGame = m.getBestGame();
-            
-            var strContent      = '';
-            var averageScore    = bestGame.game.reviews.average(function (a) { return a.score })
-            var strScore        = m.Utils.formatMoney(averageScore, 2, ',', '.');
-            
-            
-            strContent += "Total Revenues: " + revenues + " - Total Costs: " + costs + " - Total Profit: "+ profit;
-                    
-            if (bestGame != null){
-                strContent += " - Best Game: " + bestGame.game.title + " (Score: " + strScore + " - Profit: " + UI.getShortNumberString(bestGame.profit) + ")";
+
+            if ( m.AvailGameNotify != null){
+                if ( m.AvailGameNotify.salesCashLog != null && m.AvailGameNotify.salesCashLog.length > 0){
+                    if ( showReleaseDetailAvailableNotifications ) {    
+                        GameManager.company.notifications.push(m.Notifications.getReleaseDetailsAvailNotification());
+                    }
+                
+                    m.AvailGameNotify = null;
+                }
+            }
+            if(m.LastBestGame == null || m.LastBestGame.game.title != bestGame.game.title){
+                m.LastBestGame = bestGame;
+
+                if ( showBestGameNotifications ) {    
+                    GameManager.company.notifications.push(m.Notifications.getBestGameNotification());
+                }
             }
             
-            m.Footer.setContent(strContent);
+            if ( GameManager.company.currentGame.salesCashLog != null && GameManager.company.currentGame.salesCashLog.length > 0 ){
+                m.AvailGameNotify = GameManager.company.currentGame;
+            }
+
+                        
         }
         catch(e) {
             
@@ -138,6 +179,15 @@ var InfoStatsModAbescoUG_Core = function() {
                 link.id   = cssId;
                 link.rel  = 'stylesheet';
                 link.type = 'text/css';
+                link.href = 'mods/InfoStatsMod/libs/image-picker/image-picker.css';
+                link.media = 'all';
+                head.appendChild(link);
+            }            
+            {
+                var link  = $.createElement('link');
+                link.id   = cssId;
+                link.rel  = 'stylesheet';
+                link.type = 'text/css';
                 link.href = 'mods/InfoStatsMod/libs/flot/flot.css';
                 link.media = 'all';
                 head.appendChild(link);
@@ -145,8 +195,6 @@ var InfoStatsModAbescoUG_Core = function() {
         }
     }
    
-
-
     m.getGameDetailElement = function (game) {
                        
         var releaseDate         = GameManager.company.getDate(game.releaseWeek);
@@ -186,6 +234,7 @@ var InfoStatsModAbescoUG_Core = function() {
         
         // Acquire every rating obtained by magazines, acquire engine specs
         var $tableMagazines     = m.getMagazineReviewsAsTableElement(game);
+        
         var $tableEngineSpecs   = m.ReleasedGames.getEngineSpecsDataListContainerElement(game);
         var $tableSales         = m.getGameSalesDetailsAsTableElement(game);
        
@@ -210,8 +259,7 @@ var InfoStatsModAbescoUG_Core = function() {
 
             $gamedetailsTab3.append($tableSales).append($divSalesWeekly);
             
-           $divSalesWeekly.append();
-           
+                      
         var weeklySalesObj =  m.getGameSalesWeeklyAsDivElement(game);
         var $divPlaceholder = weeklySalesObj[0];
         var weeklySalesData = weeklySalesObj[1];
@@ -325,37 +373,49 @@ var InfoStatsModAbescoUG_Core = function() {
         
 
         var $tableRow_1        = $(document.createElement('tr'));
-        var $tableRow_1_Cell_1 = $(document.createElement('td')).attr('valign','top').attr('width', '90');
-        var $tableRow_1_Cell_2 = $(document.createElement('td')).attr('valign','top').attr('width', '90');
-        var $tableRow_1_Cell_3 = $(document.createElement('td')).attr('valign','top');
+        var $tableRow_1_Cell_1 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_1_Cell_2 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_1_Cell_3 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_1_Cell_4 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_1_Cell_5 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_1_Cell_6 = $(document.createElement('td')).attr({valign:'top'});
 
         $tableRow_1_Cell_1.text('Income');
-        $tableRow_1_Cell_2.text(UI.getShortNumberString(game.totalSalesCash));
-        $tableRow_1_Cell_3.text();
-        
-        $tableRow_1.append($tableRow_1_Cell_1).append($tableRow_1_Cell_2).append($tableRow_1_Cell_3);
+        $tableRow_1_Cell_2.text(UI.getShortNumberString(game.revenue));
+        // --> $tableRow_1_Cell_3.text('Total Income');
+        // --> $tableRow_1_Cell_4.text(UI.getShortNumberString(game.totalSalesCash));
+
+        $tableRow_1.append($tableRow_1_Cell_1, $tableRow_1_Cell_2, $tableRow_1_Cell_3, $tableRow_1_Cell_4, $tableRow_1_Cell_5, $tableRow_1_Cell_6);
         
         var $tableRow_2        = $(document.createElement('tr'));
-        var $tableRow_2_Cell_1 = $(document.createElement('td')).attr('valign','top');
-        var $tableRow_2_Cell_2 = $(document.createElement('td')).attr('valign','top');
-        var $tableRow_2_Cell_3 = $(document.createElement('td')).attr('valign','top');
+        var $tableRow_2_Cell_1 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_2_Cell_2 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_2_Cell_3 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_2_Cell_4 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_2_Cell_5 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_2_Cell_6 = $(document.createElement('td')).attr({valign:'top'})
 
         $tableRow_2_Cell_1.text('Costs');
         $tableRow_2_Cell_2.text(UI.getShortNumberString(game.costs));
         $tableRow_2_Cell_3.text();
 
-        $tableRow_2.append($tableRow_2_Cell_1).append($tableRow_2_Cell_2).append($tableRow_2_Cell_3);
+        $tableRow_2.append($tableRow_2_Cell_1, $tableRow_2_Cell_2, $tableRow_2_Cell_3, $tableRow_2_Cell_4, $tableRow_2_Cell_5, $tableRow_2_Cell_6);
 
         var $tableRow_3        = $(document.createElement('tr'));
-        var $tableRow_3_Cell_1 = $(document.createElement('td')).attr('valign','top');
-        var $tableRow_3_Cell_2 = $(document.createElement('td')).attr('valign','top');
-        var $tableRow_3_Cell_3 = $(document.createElement('td')).attr('valign','top');
+        var $tableRow_3_Cell_1 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_3_Cell_2 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_3_Cell_3 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_3_Cell_4 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_3_Cell_5 = $(document.createElement('td')).attr({valign:'top', width:90});
+        var $tableRow_3_Cell_6 = $(document.createElement('td')).attr({valign:'top'})
 
         $tableRow_3_Cell_1.text('Profit');
-        $tableRow_3_Cell_2.text(UI.getShortNumberString(game.totalSalesCash - game.costs));
-        $tableRow_3_Cell_3.text();
+        $tableRow_3_Cell_2.text(UI.getShortNumberString(game.revenue - game.costs));
+        // --> $tableRow_3_Cell_3.text('Total Profit');
+        // --> $tableRow_3_Cell_4.text(UI.getShortNumberString(game.totalSalesCash - game.costs));
 
-        $tableRow_3.append($tableRow_3_Cell_1).append($tableRow_3_Cell_2).append($tableRow_3_Cell_3);
+        
+        $tableRow_3.append($tableRow_3_Cell_1, $tableRow_3_Cell_2, $tableRow_3_Cell_3, $tableRow_3_Cell_4, $tableRow_3_Cell_5, $tableRow_3_Cell_6);
         
         $tableBodySales.append($tableRow_1).append($tableRow_2).append($tableRow_3);
         
@@ -371,7 +431,7 @@ var InfoStatsModAbescoUG_Core = function() {
        
         var $divPlaceholder = $(document.createElement('div'));
             $divPlaceholder.attr('id', 'InfoStatsModGameSalesWeeklyFlotGraphPlaceholder');
-            $divPlaceholder.css('position','relative').css('width','500px').css('height','200px');
+            $divPlaceholder.css('position','relative').css('width','500px').css('height','160px');
         
         var data = [];
         
@@ -400,7 +460,7 @@ var InfoStatsModAbescoUG_Core = function() {
                 
     };
 
-    m.getTotalRevenues = function() {
+    this.getTotalRevenues = function() {
         var games = GameManager.company.gameLog;
         if (games == null || games.length < 1){
             return 0;
@@ -414,11 +474,11 @@ var InfoStatsModAbescoUG_Core = function() {
         return value;           
     };
     
-    m.getTotalProfit = function() {
+    this.getTotalProfit = function() {
         return m.getTotalRevenues() - m.getTotalCosts();
     };
     
-    m.getTotalCosts = function() {
+    this.getTotalCosts = function() {
         var games = GameManager.company.gameLog;
         if (games == null || games.length < 1){
             return 0;
@@ -432,7 +492,7 @@ var InfoStatsModAbescoUG_Core = function() {
         return value;
     };
     
-    m.getGamesWithHighestScore = function() {
+    this.getGamesWithHighestScore = function() {
         var games = GameManager.company.gameLog;
         if (games == null || games.length < 1){
             return 0;
@@ -449,7 +509,7 @@ var InfoStatsModAbescoUG_Core = function() {
         return values;       
     };
     
-    m.getBestGame = function() {
+    this.getBestGame = function() {
         var games   = m.getGamesWithHighestScore();
         if ( games == null || games.length < 1){
             return null;
@@ -543,6 +603,19 @@ var InfoStatsModAbescoUG_Core = function() {
                 case "statsmodconfigreleasedgames":
                     m.ReleasedGames.showConfig();
                     break;
+                case "statsmodshowplatforms":
+                    m.Platforms.showPlatforms();
+                    break;
+                case "statsmodconfigplatforms":
+                    m.Platforms.showConfig();
+                    break;
+
+                case "statsmodnotifications":
+                    m.Notifications.showNotifications();
+                    break;
+
+
+
                 case "statsmodshowsalesanalysis":
                     m.Analysis.showSalesAnalysis();
                     break;
@@ -551,6 +624,9 @@ var InfoStatsModAbescoUG_Core = function() {
                     break;
                 case "statsmodtogglepause":
                     GameManager.togglePause();
+                    break;
+                case "statsmodresetsettings":
+                     m.Config.resetStorage();
                     break;
                 case "statsmodtogglefooter":
                     m.Footer.toggleVisibilty();
