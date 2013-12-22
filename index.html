@@ -7,12 +7,14 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="stylesheets/ui-lightness/jquery-ui-1.10.3.custom.min.css">
     <link rel="stylesheet" href="stylesheets/prettyPhoto.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <script src="javascripts/jquery-10.2.js"></script>
+    <script src="javascripts/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="javascripts/jquery.prettyPhoto.js"></script>
 		<script type="text/javascript" charset="utf-8">
 		  $(document).ready(function(){
@@ -40,6 +42,8 @@
 						ie6_fallback: true,
 						social_tools: ''
 		    });
+		    
+		    $('#tabs').tabs();
 		  });
 		</script>
     
@@ -72,9 +76,8 @@
 <ul>
 <li>Launch:           December 09th, 2013</li>
 <li>Last Update:  December 22th, 2013</li>
-</ul><h5>
-
-Current screenshots
+</ul>
+<h5>Current screenshots</h5>
 <hr>
 <div>
 <a href="images/screens/InfoAndStatsMod_Development_Screen_030_03.jpg" rel="prettyPhoto[pp_gal]" title="This is an the released games analysis window where games can be selected and detailed information displayed."><img src="images/screens/InfoAndStatsMod_Development_Screen_030_03.jpg" width="60" height="60" alt="Released Games Analysis Overview" /></a>
@@ -91,7 +94,15 @@ Current screenshots
 </div>
 <hr>
 
-<a name="changelog-version-031" class="anchor" href="#changelog-version-031"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.3.1</h5>
+<div id="tabs">
+<ul>
+<li><a href="#fragment-1">0.3.1</a></li>
+<li><a href="#fragment-2">0.3.0</a></li>
+<li><a href="#fragment-3">0.2.0</a></li>
+<li><a href="#fragment-4">0.1.1</a></li>
+</ul>
+<div id="fragment-1">
+	<h5><a name="changelog-version-031" class="anchor" href="#changelog-version-031"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.3.1</h5>
 <p><strong>Last Update:  December 22th, 2013</strong></p>
 
 <ul>
@@ -110,8 +121,10 @@ Current screenshots
 <li>Footer: Friendly date (with day and month name and full year)</li>
 <li>Implementation of the "Notifications" screen</li>
 <li>Notifications: Configurable In-Game Notification when Best Game Ever changes</li>
-</ul><h5>
-<a name="changelog-version-030" class="anchor" href="#changelog-version-030"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.3.0</h5>
+</ul>
+</div>
+<div id="fragment-2">
+	<h5><a name="changelog-version-030" class="anchor" href="#changelog-version-030"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.3.0</h5>
 
 <p><strong>Last Update:  December 20th, 2013</strong></p>
 
@@ -128,8 +141,10 @@ Current screenshots
 <li>Released Games Analysis: Revised platform images. Now bigger size with nice label and dynamic image scale depending on platform count.</li>
 <li>Released Games Analysis: Fixed engine specs tech number format to max 2 decimal places</li>
 <li>Fixed an error encountered on startup when weekProceeded event was triggered without a best game - Thanks to SirEverard</li>
-</ul><h5>
-<a name="changelog-version-020" class="anchor" href="#changelog-version-020"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.2.0</h5>
+</ul>
+</div>
+<div id="fragment-3">
+	<h5><a name="changelog-version-020" class="anchor" href="#changelog-version-020"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.2.0</h5>
 
 <p><strong>Last Update:  December 19th, 2013</strong></p>
 
@@ -152,7 +167,10 @@ Current screenshots
 <li>Footer: Game compliant number value formatting</li>
 <li>Footer: Best game now calculated using highest score and highest profit</li>
 <li>Sales Analysis: Remove access to feature in published version until it has reached a usable state</li>
-</ul><h5>
+</ul>
+</div>
+<div id="fragment-4">
+	<h5>
 <a name="changelog-version-011" class="anchor" href="#changelog-version-011"><span class="octicon octicon-link"></span></a>ChangeLog Version 0.1.1</h5>
 
 <p><strong>Last Update:  December 10th, 2013</strong></p>
@@ -181,6 +199,14 @@ Current screenshots
 <li>Implementation of "Debug" functions (will be removed upon final release)</li>
 <li>Debug: Toggle Pause </li>
 </ul>
+</div>
+</div>
+
+
+
+
+
+
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/abesco">abesco</a></p>
