@@ -11,7 +11,7 @@
 - Version Information
     - Latest:       0.3.1
     - Launch:       December 09th, 2013
-    - Last Update:  December 22th, 2013
+    - Last Update:  January 05th, 2014
 
 **Using the following additional scripts:**
 
