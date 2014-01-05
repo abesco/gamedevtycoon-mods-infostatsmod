@@ -21,7 +21,6 @@ var InfoStatsModAbescoUG_Core = function() {
     
     this.LastBestGame      = null;
     this.AvailGameNotify   = null;
-    this.LastGameReviewed  = null;
     
     // Init modal win objects
     var $modalWindowObj     = $('body').modalWindow({ zIndex: 9001, blur: false, overlay: true}, 'statsMod');
@@ -78,19 +77,6 @@ var InfoStatsModAbescoUG_Core = function() {
         // GDT.on(GDT.eventKeys.ui.contextMenuShowing, contextMenuShowing);
         // GDT.on(GDT.eventKeys.ui.beforeShowingNotification, contextMenuBeforeShow);
         GDT.on(GDT.eventKeys.gameplay.weekProceeded, m.weekProceeded);
-        
-        (function() {
-            var proxied = UI._showNotification;
-            UI._showNotification = function (a, b) {
-                proxied.apply( this, arguments );
-                switch (a.header) {
-                     case "{Reviews}":
-                     // Game review
-                     m.LastGameReviewed = GameManager.company.gameLog.last();
-                     break;
-                }
-            };
-        })();
           
     };    
 
