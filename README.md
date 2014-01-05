@@ -6,11 +6,22 @@
 **to game sales and financial themes.**
 
 - Launch: 			December 09th, 2013
-- Last Update:  December 22th, 2013
+- Last Update:  January 05th, 2014
+
+
+#####ChangeLog Version 0.3.2#####
+
+**Last Update:  January 05th, 2014**
+
+- Added new internal functions to "Utils" for providing more reliable "BestGameEver" calculation
+- Added new notification when "BestGameEver" get's even better (previous record broken)
+- Reviewed and optimized "WeekProceeded" event#
+- Image folder now included (was missing previously)
+
 
 #####ChangeLog Version 0.3.1#####
 
-**Last Update:  December 22th, 2013**
+**Last Update:  December 22nd, 2014**
 
 - Released Games Analysis: New Data Column "Fans"
 - Released Games Analysis: New Data Column "Sequel"
