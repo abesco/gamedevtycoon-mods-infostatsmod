@@ -54,6 +54,8 @@ footer.js             Name:       Constant Footer
 var InfoStatsModAbescoUG = {};
 (function () {
     try {
+        InfoStatsModAbescoUG.VERSION = '0.3.2';
+        
         // Include all required script files at runtime
         // Note: I feel this is a better approach instead of including these files
         //       within the .json files (I sometimes got some inclusion errors and alike)

@@ -19,8 +19,9 @@ var InfoStatsModAbescoUG_Core = function() {
     this.Platforms      = new InfoStatsModAbescoUG_Platforms(this);
     this.Notifications  = new InfoStatsModAbescoUG_Notifications(this);
     
-    this.LastBestGame       = null;
+    this.LastBestGame      = null;
     this.AvailGameNotify   = null;
+    this.LastGameReviewed  = null;
     
     // Init modal win objects
     var $modalWindowObj     = $('body').modalWindow({ zIndex: 9001, blur: false, overlay: true}, 'statsMod');
@@ -58,14 +59,14 @@ var InfoStatsModAbescoUG_Core = function() {
         m.DocumentBody.append('<div id="statsmodtogglepause" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Toggle Pause</div>');
         m.DocumentBody.append('<div id="statsmodresetsettings" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Reset Configs</div>');
 
-        m.DocumentBody.append('<div id="StatsModContainerLabel5" style="text-align:center;margin-left:50px;width: 450px"><br><br>InfoStatsMod Version 0.3.1</div>');
+        m.DocumentBody.append('<div id="StatsModContainerLabel5" style="text-align:center;margin-left:50px;width: 450px"><br><br>InfoStatsMod Version '+InfoStatsModAbescoUG.VERSION+'</div>');
 
         m.DocumentBody.append('<div id="infostatmod-common-dialog" title="InfoStatsMod">');
         m.DocumentBody.append('</div>');
 
         
         m.Footer.setup();
-        m.Footer.setContent("InfoStatsMod Expansion - Version 0.3.1 - Written and developed by Francesco Abbattista - (c) 2013 Francesco Abbattista");
+        m.Footer.setContent("InfoStatsMod Expansion - Version "+InfoStatsModAbescoUG.VERSION +" - Written and developed by Francesco Abbattista - (c) 2013 Francesco Abbattista");
         m.Footer.show();
 
         $( "#infostatsmod-common-dialog" ).dialog();
@@ -77,14 +78,27 @@ var InfoStatsModAbescoUG_Core = function() {
         // GDT.on(GDT.eventKeys.ui.contextMenuShowing, contextMenuShowing);
         // GDT.on(GDT.eventKeys.ui.beforeShowingNotification, contextMenuBeforeShow);
         GDT.on(GDT.eventKeys.gameplay.weekProceeded, m.weekProceeded);
+        
+        (function() {
+            var proxied = UI._showNotification;
+            UI._showNotification = function (a, b) {
+                proxied.apply( this, arguments );
+                switch (a.header) {
+                     case "{Reviews}":
+                     // Game review
+                     m.LastGameReviewed = GameManager.company.gameLog.last();
+                     break;
+                }
+            };
+        })();
+          
     };    
 
           
      /* Event Handlers */
     this.weekProceeded = function(e) {
         try {
-            // Update the footer overlay
-            m.Footer.updateContent(e.company);
+        
             
             var config = m.Config.loadNotifications();
             var showBestGameNotifications = config != null ? config.showBestGameNotifications : null;
@@ -93,12 +107,15 @@ var InfoStatsModAbescoUG_Core = function() {
             if (showBestGameNotifications == null){
                 showBestGameNotifications = true;
             }
+            
             if (showReleaseDetailAvailableNotifications == null){
                 showReleaseDetailAvailableNotifications = true;
             }
 
             var bestGame = m.getBestGame();
-
+            var lastGame = GameManager.company.gameLog.last();
+            
+            /*
             if ( m.AvailGameNotify != null){
                 if ( m.AvailGameNotify.salesCashLog != null && m.AvailGameNotify.salesCashLog.length > 0){
                     if ( showReleaseDetailAvailableNotifications ) {    
@@ -108,18 +125,39 @@ var InfoStatsModAbescoUG_Core = function() {
                     m.AvailGameNotify = null;
                 }
             }
-            if(m.LastBestGame == null || m.LastBestGame.game.title != bestGame.game.title){
-                m.LastBestGame = bestGame;
-
-                if ( showBestGameNotifications ) {    
-                    GameManager.company.notifications.push(m.Notifications.getBestGameNotification());
-                }
-            }
+            */
             
-            if ( GameManager.company.currentGame.salesCashLog != null && GameManager.company.currentGame.salesCashLog.length > 0 ){
+            /*
+            if ( GameManager.company.currentGame && GameManager.company.currentGame.salesCashLog != null && GameManager.company.currentGame.salesCashLog.length > 0 ){
                 m.AvailGameNotify = GameManager.company.currentGame;
             }
+            */
 
+            if (m.Utils.isDefined(bestGame.game)){
+                // We have a best game, check if it's different than our last best game
+
+                if (!m.Utils.isDefined(m.LastBestGame) || (m.LastBestGame != bestGame.game) && bestGame.game == lastGame){
+                    // Now we know it's a released and reviewed game since getBestGame already filters it!
+                    var anotherRecord = m.Utils.isDefined(m.LastBestGame) && m.LastBestGame.game.id == bestGame.game.id;
+                    
+                    m.LastBestGame = bestGame;
+                    
+                    // If we want to show Best Game Notification, we do it here by pushing a notification into pipeline
+                    if ( showBestGameNotifications ) {    
+                        // We need to check if this game has been already nominated as best game
+                        if(!anotherRecord){
+                            GameManager.company.notifications.push(m.Notifications.getBestGameNotification());
+                        }
+                        else {
+                            GameManager.company.notifications.push(m.Notifications.getBestGameBreaksRecordsNotification());
+                        }
+                    }
+                }
+                
+            }
+
+            // Update the footer overlay
+            m.Footer.updateContent(e.company);
                         
         }
         catch(e) {
@@ -532,7 +570,9 @@ var InfoStatsModAbescoUG_Core = function() {
             }
         }
         
-        return {game: value, profit: maxprofit};
+        var canBestGameBeShown = m.Utils.hasGameBeenReviewed(value);
+
+        return {game: canBestGameBeShown ? value : m.LastBestGame, profit: maxprofit};
     };
     
     // Quick implementation for StatsMod ModalWindow Open and Close Events

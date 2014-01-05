@@ -18,6 +18,16 @@ var InfoStatsModAbescoUG_Notifications = function(infoStatsModCore){
         var msg = "Well done! Your game {0} has been your best game ever been published by your company.\n\nIt has been scored {1} with a profit of {2}.".localize().format(bestGame.game.title, strScore, UI.getShortNumberString(bestGame.profit));
         return new Notification("Company's Best Game".localize(), msg);
     };
+
+    this.getBestGameBreaksRecordsNotification = function() {
+        var bestGame        = core.getBestGame();
+        var averageScore    = bestGame.game.reviews.average(function (a) { return a.score })
+        var strScore        = core.Utils.formatMoney(averageScore, 2, ',', '.');
+
+        var msg = "Amazing! Your game {0} has broken another record! Profit has now raised to {1}.".localize().format(bestGame.game.title, UI.getShortNumberString(bestGame.profit));
+        return new Notification("Company's Best Game".localize(), msg);
+    };
+
     
     this.getReleaseDetailsAvailNotification = function() {
         var bestGame        = GameManager.company.currentGame;

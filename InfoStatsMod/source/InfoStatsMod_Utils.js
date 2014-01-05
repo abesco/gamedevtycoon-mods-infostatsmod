@@ -416,6 +416,16 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
         return guid();
     };
     
-
+    this.isDefined = function(obj){
+       return typeof obj != 'undefined' && obj != null;
+    };
     
+    this.hasGameSales = function(game){
+       
+      return m.isDefined(game) && m.isDefined(game.salesCashLog) && game.salesCashLog.length > 0;  
+    };
+    
+    this.hasGameBeenReviewed = function(game){
+      return m.isDefined(game) && game.reviewMessageDisplayed;
+    };
 }

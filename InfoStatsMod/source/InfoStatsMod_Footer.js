@@ -57,6 +57,7 @@ var InfoStatsModAbescoUG_Footer = function(infoStatsModCore) {
             var profit   = UI.getShortNumberString(core.getTotalProfit());
             var bestGame = core.getBestGame();
             
+           
             var strContent      = '';
             var averageScore    = bestGame.game.reviews.average(function (a) { return a.score })
             var strScore        = core.Utils.formatMoney(averageScore, 2, ',', '.');
