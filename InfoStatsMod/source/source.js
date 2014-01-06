@@ -53,41 +53,22 @@ footer.js             Name:       Constant Footer
 
 var InfoStatsModAbescoUG = {};
 (function () {
-    try {
-        InfoStatsModAbescoUG.VERSION = '0.3.3a';
-        
-        // Include all required script files at runtime
-        // Note: I feel this is a better approach instead of including these files
-        //       within the .json files (I sometimes got some inclusion errors and alike)
-        var jslibs = ['Config', 'Utils', 'Footer', 'ReleasedGames', 'Analysis', 'Platforms', 'Notifications', 'Core']
-        $.each(jslibs, function(key, value){
-            var $jsdiv = $('body').find('#InfoStatsModResources');
-            if ($jsdiv == null){
-                $jsdiv = $(document.createElement('div'));
-                $jsdiv.attr('id','InfoStatsModResources');
-                $('body').append($jsdiv);
-            }
-            
-            var jsfile = './mods/InfoStatsMod/source/InfoStatsMod_' + value + '.js';
-            var $jstag = $(document.createElement('script'));
-                $jstag.attr('src',jsfile).appendTo($jstag);
-            
-        });
-        
-        // Prepare the module
-        var instance            = InfoStatsModAbescoUG;
-        this.Core               = new InfoStatsModAbescoUG_Core();
-        
-        // Setup the module and start
-        this.Core.setup();
-        
+    InfoStatsModAbescoUG.VERSION = '0.3.3a';
 
-                
-    }
-    catch(e){
-        alert('An exception occured in the InfoStatsMod Expansion!\r\n\r\n'+e.message);
-    }
-    finally {
-        
-    }
+    this.Core;
+
+    this.init = function(){
+        try {
+            Core = new InfoStatsModAbescoUG_Core();
+            Core.setup();
+        }
+        catch(e){
+            alert('An exception occured in the InfoStatsMod Expansion init!\r\n\r\n'+e.message);
+        }
+        finally {
+            
+        }
+    };
+    
+    return this;
 })();
