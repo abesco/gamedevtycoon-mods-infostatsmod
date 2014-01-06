@@ -56,8 +56,8 @@ var InfoStatsModAbescoUG = {};
     InfoStatsModAbescoUG.VERSION = '0.3.3a';
 
     this.Core;
-
-    this.init = function(){
+    
+    InfoStatsModAbescoUG.init = function(){
         try {
             Core = new InfoStatsModAbescoUG_Core();
             Core.setup();
