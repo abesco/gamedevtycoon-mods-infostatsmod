@@ -1,7 +1,7 @@
 {
     "id" : "InfoStatsMod-AbescoUG",
     "name" : "Information and Statistics Module",
-    "version":"0.3.3a",
+    "version":"0.4.0a",
     "author":"Francesco Abbattista",
     "url":"http://forum.greenheartgames.com/t/wip-info-stats-expansion-mod-current-release-0-3-1/9408/65",
     "description" : "Expansion module that provides detailed information and statistics to various aspects of the game.",

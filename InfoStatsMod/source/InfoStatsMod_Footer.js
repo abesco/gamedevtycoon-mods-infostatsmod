@@ -52,25 +52,41 @@ var InfoStatsModAbescoUG_Footer = function(infoStatsModCore) {
         
         this.updateContent = function(company){
             var curDate  = core.Utils.getRealDateAsDateString(company.currentWeek);
-            var revenues = UI.getShortNumberString(core.getTotalRevenues());
-            var costs    = UI.getShortNumberString(core.getTotalCosts());
-            var profit   = UI.getShortNumberString(core.getTotalProfit());
+            var revenues = core.getTotalRevenues();
+                revenues = isNaN(revenues) ? "n.a." : UI.getShortNumberString(core.getTotalRevenues());
+            var costs    = core.getTotalCosts();
+                costs    = isNaN(costs) ? "n.a." : UI.getShortNumberString(core.getTotalCosts());
+            var profit   = core.getTotalProfit();
+                profit   = isNaN(profit) ? "n.a." : UI.getShortNumberString(core.getTotalProfit());
+
             var bestGame = core.getBestGame();
-            
+            var isLoss   = bestGame == null ? 0 : bestGame.game.revenue - bestGame.game.costs < 0;
            
-            var strContent      = '';
+            var strContent      = '<div style="text-align:center">';
             var averageScore    = bestGame.game.reviews.average(function (a) { return a.score })
             var strScore        = core.Utils.formatMoney(averageScore, 2, ',', '.');
-            
+            var numScore        = new Number(averageScore);
             var gameDate        = GameManager.company.getDate(company.currentWeek);
             
-            strContent += curDate + " - Revenues: " + revenues + " - Costs: " + costs + " - Profit: "+ profit;
-                    
+            strContent += curDate + " - Revenues: " + (revenues == "NaN" ? "n.a." : revenues)  + " - Costs: " + (costs == "NaN" ? "n.a." : costs) + " - Profit: "+ (profit == "NaN" ? "n.a." : profit);
+             
+            var quickColorTableScore  = [];
+            var quickColorTableProfit = ['FF2222','22FF22'];
+             
+            for (var i = 0; i < 10; i++){
+                quickColorTableScore.push( (9 + i) + "" + (9 + i) + "" + i + "" + i + "00");
+            }   
+               
             if (bestGame != null){
-                strContent += " - Best Game Ever: " + bestGame.game.title + " (Score: " + strScore + " - Profit: " + UI.getShortNumberString(bestGame.profit) + ")";
+                
+                var colorSpan       = '<span style="color:#{0}">{1}</span>'
+                var scoreColored    = colorSpan.format(quickColorTableScore[numScore.truncateDecimals(0)], strScore);
+                var profitColored   = colorSpan.format(quickColorTableProfit[isLoss ? 0 : 1], UI.getShortNumberString(bestGame.profit));
+                
+                strContent         += " - Best Game Ever: " + bestGame.game.title + " (Score: " + scoreColored + " - Profit: " + profitColored + ")";
             }
 
-            
+            strContent += '</div>';
             m.setContent(strContent);
 
         };

@@ -15,6 +15,8 @@ var InfoStatsModAbescoUG_Config = function() {
     this.idMainModalWindowOverlayContainer = 'InfoStatsModGameDetailsModalWindowOverlayContainer';
     this.idDataStorage              = 'InfoStatsModAbescoUG';
     this.idReleaseGamesConfigContainer  = 'InfoStatsModReleasedGamesConfigContainer';
+    this.idPlatformDetailsConfigContainer  = 'InfoStatsModPlatformDetailsConfigContainer';
+    this.idConfigStatusContainer = 'InfoStatsModConfigStatusContainer';
 
     this.dataStorage                = GDT.getDataStore(this.idDataStorage);
     
@@ -58,5 +60,6 @@ var InfoStatsModAbescoUG_Config = function() {
         
         return this.dataStorage.data.notifications;
     };
+        
         
 };

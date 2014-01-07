@@ -515,4 +515,6 @@ var InfoStatsModAbescoUG_Platforms = function(infoStatsModCore) {
             
             // --> core.Config.saveReleasedGamesConfig(cols);
         };    
+        
+        return m;
 };      

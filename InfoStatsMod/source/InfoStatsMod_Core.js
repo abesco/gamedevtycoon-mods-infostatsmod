@@ -39,33 +39,34 @@ var InfoStatsModAbescoUG_Core = function() {
         // Container for a modal window: -->
         m.DocumentBody.append('<div id="InfoStatsModContainer" class="windowBorder tallWindow" style="overflow:auto;display:none;"> <div id="InfoStatsModTop" class="windowTitle smallerWindowTitle">Information and Statistics</div>');
         m.DocumentBody = $('#'+m.Config.idContainer);
-        m.DocumentBody.append('<div id="StatsModContainerLabel1" style="text-align:center;margin-left:50px;width: 450px">Released Games Analysis</div>');
+        m.DocumentBody.append('<div id="StatsModContainerLabel1" style="text-align:center;margin-left:50px;width: 450px">Main</div>');
         m.DocumentBody.append('<div id="statsmodshowreleasedgames" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Release Details</div>');
-        m.DocumentBody.append('<div id="statsmodconfigreleasedgames" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Config</div>');
-        
-        m.DocumentBody.append('<div id="StatsModContainerLabel2" style="text-align:center;margin-left:50px;width: 450px">Platform Analysis</div>');
         m.DocumentBody.append('<div id="statsmodshowplatforms" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Platform Details</div>');
-        m.DocumentBody.append('<div id="statsmodconfigplatforms" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Config</div>');
 
+        
+        m.DocumentBody.append('<div id="StatsModContainerLabel2" style="text-align:center;margin-left:50px;width: 450px">Settings</div>');
+
+        m.DocumentBody.append('<div id="statsmodconfig" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Config</div>');
+        m.DocumentBody.append('<div id="statsmodresetsettings" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Reset Configs</div>');
+        
         // --> Disable on releases
         // --> m.DocumentBody.append('<div id="" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Sales Analysis</div>');
 
         m.DocumentBody.append('<div id="StatsModContainerLabel3" style="text-align:center;margin-left:50px;width: 450px">Miscellaneous</div>');
         m.DocumentBody.append('<div id="statsmodtogglefooter" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Toggle Footer</div>');
         m.DocumentBody.append('<div id="statsmodnotifications" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Notifications</div>');
-
-        m.DocumentBody.append('<div id="StatsModContainerLabel4" style="text-align:center;margin-left:50px;width: 450px">Debug</div>');
         m.DocumentBody.append('<div id="statsmodtogglepause" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Toggle Pause</div>');
-        m.DocumentBody.append('<div id="statsmodresetsettings" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Reset Configs</div>');
 
-        m.DocumentBody.append('<div id="StatsModContainerLabel5" style="text-align:center;margin-left:50px;width: 450px"><br><br>InfoStatsMod Version '+InfoStatsModAbescoUG.VERSION+'</div>');
+        // m.DocumentBody.append('<div id="statsmodtestquality" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Quality Test</div>');
+
+        m.DocumentBody.append('<div id="StatsModContainerLabel5" style="text-align:center;margin-left:50px;width: 450px"><br><br>InfoStatsMod Expansion <font size="-1"><sup><i>version '+InfoStatsModAbescoUG.VERSION+'</i></sup></font><br><font size="-2">(c) 2014 Francesco Abbattista</font></div>');
 
         m.DocumentBody.append('<div id="infostatmod-common-dialog" title="InfoStatsMod">');
         m.DocumentBody.append('</div>');
 
         
         m.Footer.setup();
-        m.Footer.setContent("InfoStatsMod Expansion - Version "+InfoStatsModAbescoUG.VERSION +" - Written and developed by Francesco Abbattista - (c) 2013 Francesco Abbattista");
+        m.Footer.setContent("<div style='text-align:center'>InfoStatsMod Expansion <font size='-1'><sup><i>version "+InfoStatsModAbescoUG.VERSION+"</i></sup></font></div>");
         m.Footer.show();
 
         $( "#infostatsmod-common-dialog" ).dialog();
@@ -79,7 +80,6 @@ var InfoStatsModAbescoUG_Core = function() {
         GDT.on(GDT.eventKeys.gameplay.weekProceeded, m.weekProceeded);
           
     };    
-
           
      /* Event Handlers */
     this.weekProceeded = function(e) {
@@ -124,7 +124,9 @@ var InfoStatsModAbescoUG_Core = function() {
 
                 if (!m.Utils.isDefined(m.LastBestGame) || (m.LastBestGame != bestGame.game) && bestGame.game == lastGame){
                     // Now we know it's a released and reviewed game since getBestGame already filters it!
-                    var anotherRecord = m.Utils.isDefined(m.LastBestGame) && m.LastBestGame.game.id == bestGame.game.id;
+                    var profitOld = m.Utils.isDefined(m.LastBestGame) ? m.LastBestGame.revenue - m.LastBestGame.costs : 0;
+                    var profitNew = bestGame.revenue - bestGame.costs;
+                    var anotherRecord = m.Utils.isDefined(m.LastBestGame) && m.LastBestGame.game.id == bestGame.game.id && profitNew > profitOld;
                     
                     m.LastBestGame = bestGame;
                     
@@ -161,58 +163,15 @@ var InfoStatsModAbescoUG_Core = function() {
         var cssId = 'StatsModCSSAbescoUG';  
         if (!$.getElementById(cssId))
         {
+            var css = ['modal', 'datalist', 'flot', 'charts', 'footer', 'image-picker', 'modal'];
             var head  = $.getElementsByTagName('head')[0];
-            {
+            
+            for(var i = 0; i < css.length; i++){
                 var link  = $.createElement('link');
                 link.id   = cssId;
                 link.rel  = 'stylesheet';
                 link.type = 'text/css';
-                link.href = 'mods/InfoStatsMod/libs/modal/modal.css';
-                link.media = 'all';
-                head.appendChild(link);
-            }
-            {
-                var link  = $.createElement('link');
-                link.id   = cssId;
-                link.rel  = 'stylesheet';
-                link.type = 'text/css';
-                link.href = 'mods/InfoStatsMod/libs/data-list/base.css';
-                link.media = 'all';
-                head.appendChild(link);
-            }
-            {
-                var link  = $.createElement('link');
-                link.id   = cssId;
-                link.rel  = 'stylesheet';
-                link.type = 'text/css';
-                link.href = 'mods/InfoStatsMod/libs/charts/charts.css';
-                link.media = 'all';
-                head.appendChild(link);
-            }
-            {
-                var link  = $.createElement('link');
-                link.id   = cssId;
-                link.rel  = 'stylesheet';
-                link.type = 'text/css';
-                link.href = 'mods/InfoStatsMod/libs/misc/footer.css';
-                link.media = 'all';
-                head.appendChild(link);
-            }
-            {
-                var link  = $.createElement('link');
-                link.id   = cssId;
-                link.rel  = 'stylesheet';
-                link.type = 'text/css';
-                link.href = 'mods/InfoStatsMod/libs/image-picker/image-picker.css';
-                link.media = 'all';
-                head.appendChild(link);
-            }            
-            {
-                var link  = $.createElement('link');
-                link.id   = cssId;
-                link.rel  = 'stylesheet';
-                link.type = 'text/css';
-                link.href = 'mods/InfoStatsMod/libs/flot/flot.css';
+                link.href = 'mods/InfoStatsMod/libs/'+css[i]+'.css';
                 link.media = 'all';
                 head.appendChild(link);
             }
@@ -231,8 +190,8 @@ var InfoStatsModAbescoUG_Core = function() {
         var gameAudience        = GameManager.company.researchCompleted.indexOf(Research.TargetAudience) != -1 ? General.getAudienceLabel(game.targetAudience) : "";
         var gameReleaseWeek     = game.releaseWeek > GameManager.company.currentWeek ? "Coming soon..." : releaseDate.year + "-" + releaseDate.month + "-" + releaseDate.week;                   
         var gameRevenue         = game.revenue > 0 ? UI.getShortNumberString(game.revenue) : 0;
-        var gameProfit          = game.revenue - game.costs;
-        var isLoss              = gameProfit < 0;
+        var gameProfit          = UI.getShortNumberString(game.revenue - game.costs);
+        var isLoss              = (game.revenue - game.costs) < 0;
         var gameFans            = UI.getLongNumberString(Math.max(0, Math.round(game.fansChanged)));
         var gameTopSalesRank    = game.topSalesRank > 0 ? game.topSalesRank : "100+";
         var gameUnitsSold       = UI.getShortNumberString(game.unitsSold);
@@ -363,6 +322,8 @@ var InfoStatsModAbescoUG_Core = function() {
         $tableRowHeader.append($tableCellHeader);
         $tableBodyMagazines.append($tableRowHeader);
         
+        $tableBodyMagazines.append('<tr><td colspan="4">Reviews<hr></td></tr>');
+        
         for (var i = 0; i < game.reviews.length; i++)
         {
            var $tableRowMagazines   = $(document.createElement('tr'));
@@ -378,6 +339,22 @@ var InfoStatsModAbescoUG_Core = function() {
 
            $tableRowMagazines.append($tableCell1Magazines).append($tableCell2Magazines).append($tableCell3Magazines).append($tableCell4Magazines);
            $tableBodyMagazines.append($tableRowMagazines);
+        }
+        $tableBodyMagazines.append('<tr><td colspan="4"><br><br>Details<hr></td></tr>');
+        {
+           var $tableRowMagazines   = $(document.createElement('tr'));
+           var $tableCell1Magazines = $(document.createElement('td')).attr('valign','top').attr('width', '90');
+           var $tableCell2Magazines = $(document.createElement('td')).attr('valign','top').attr('width', '100');
+           var $tableCell3Magazines = $(document.createElement('td')).attr('valign','top').attr('width', '10');
+           var $tableCell4Magazines = $(document.createElement('td'));
+
+           $tableCell1Magazines.append('Game Quality');
+           $tableCell2Magazines.append('');
+           $tableCell3Magazines.append('' + (isNaN(m.Utils.getGameQuality(game).quality) ? 0 : m.Utils.getGameQuality(game).quality));
+           $tableCell4Magazines.append('Overall calculated game quality (max. 1.4)');
+
+           $tableRowMagazines.append($tableCell1Magazines).append($tableCell2Magazines).append($tableCell3Magazines).append($tableCell4Magazines);
+           $tableBodyMagazines.append($tableRowMagazines);            
         }
         
         $tableMagazines.append($tableBodyMagazines);
@@ -484,6 +461,203 @@ var InfoStatsModAbescoUG_Core = function() {
                 
     };
 
+    m.showConfig = function() {
+        var configContainer = $(document.createElement('div'));
+        var releasedGames   = m.getConfigReleasedGames();
+        var platformDetails = m.getConfigPlatformsDetails();
+        var saveButton      = m.getConfigSaveButton();
+        var status          = $(document.createElement('div'));
+        
+        status.attr('id', m.Config.idConfigStatusContainer);
+        status.css({width:'100%',textAlign:'center'});
+        
+        configContainer.append(releasedGames, '<br><br>',platformDetails, '<br><hr><br>', saveButton, '<br><br>', status);
+
+        var html = configContainer.html();
+        
+        m.ModalWindowApi.open(html);
+        m.ModalWindowApi.resize(640, 480);                
+    };
+    
+    m.getConfigSaveButton = function() {
+        var saveButton = $(document.createElement('div'));
+        saveButton.text('Save').addClass('selectorButton').addClass('whiteButton').css({height:'24px',width:'80px', margin:'0px', lineHeight:'24px', fontSize:'12pt'});
+        saveButton.attr('onClick','javascript:UI.saveInfoStatsModConfig(this)');
+        
+        return saveButton;
+    };
+    
+    m.getConfigReleasedGames = function() {
+        var div  = $(document.createElement('div'));
+        var cols = m.ReleasedGames.getDataListColumns();
+        
+        div.attr('id',m.Config.idReleaseGamesConfigContainer);
+        div.append('<h5>Released Games</h5><hr>');
+        div.append('<font size="-2">Column visibility</font><br><br>');
+        
+        var colspan      = Math.ceil(cols.length / 6);
+        var totalwidth   = 120 * colspan;
+        var colTable     = m.Utils.getNewTableElement({width:totalwidth+'px'},'').attr({border:0, cellpadding:0, cellspacing:0});
+        var colBody      = m.Utils.getNewTableBodyElement(null, '');
+        var colRow       = m.Utils.getNewTableRowElement(null, '');
+        
+        for(var j = 0; j < colspan; j++){
+            var colCell = m.Utils.getNewTableCellElement(null, '').attr({valign:'top', align:'left'});
+            
+            for(var i = j * 6; i < j * 6 + 6; i++){
+                var v = cols[i];
+                if (v == null){
+                    continue;
+                }
+                
+                var checkboxtable       = m.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
+                var checkboxtablebody   = m.Utils.getNewTableBodyElement(null, '');
+                var checkboxrow         = m.Utils.getNewTableRowElement();
+                var checkboxcell        = m.Utils.getNewTableCellElement(null, '').attr({valign:'top', align:'left'});
+                var checkbox            = $(document.createElement('input'));
+                
+                checkbox.css({width:'16px'}).attr({type:'checkbox', name:v.name, value:v.name, checked:v.visible});
+                                             
+                checkbox.appendTo(checkboxcell);
+                checkboxcell.appendTo(checkboxrow);
+                checkboxcell.append(v.name).append('<br>');
+                checkboxrow.appendTo(checkboxtablebody);
+                checkboxtablebody.appendTo(checkboxtable);
+                checkboxtable.appendTo(colCell);
+                
+                if (v.name == 'Id'){
+                    checkbox.attr('disabled','true');
+                }
+
+                
+            }
+            
+            colCell.appendTo(colRow);
+        }
+        
+        colRow.appendTo(colBody);
+        colBody.appendTo(colTable);
+        colTable.appendTo(div);
+        
+       return div;
+    };
+    
+    m.getConfigPlatformsDetails = function() {
+        var config     = m.Config.loadPlatformsConfig();
+        var showImages = config != null ? config.showPlatformImages : null;
+        var imageSize  = config != null ? config.platformImageSize : null;
+        var imageCols  = config != null ? config.platformImageColumnCount : null;
+        
+        if (showImages == null){
+            showImages = true;
+        }
+        if (imageSize == null){
+            imageSize = 'small';
+        }
+        if (imageCols == null){
+            imageCols = 1;
+        }
+        
+        var div  = $(document.createElement('div'));
+        
+        div.attr('id',m.Config.idPlatformDetailsConfigContainer);
+        div.append('<h5>Platform Details</h5><hr>');
+        
+        var colTable     = m.Utils.getNewTableElement({width:'360px'},'').attr({border:0, cellpadding:0, cellspacing:0});
+        var colBody      = m.Utils.getNewTableBodyElement(null, '');
+        var colRow1      = m.Utils.getNewTableRowElement(null, '');
+        var colRow2      = m.Utils.getNewTableRowElement(null, '');
+        var colRow3      = m.Utils.getNewTableRowElement(null, '');
+        
+        var colCellShowImages      = m.Utils.getNewTableCellElement(null, '').attr({ valign:'top', align:'left'});
+        {
+                var checkboxtable       = m.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
+                var checkboxtablebody   = m.Utils.getNewTableBodyElement(null, '');
+                var checkboxrow         = m.Utils.getNewTableRowElement();
+                var checkboxcell1       = m.Utils.getNewTableCellElement(null, '').attr({width:'100px', valign:'middle', align:'left'});
+                var checkboxcell2       = m.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
+                var checkbox            = $(document.createElement('input'));
+                
+                checkboxcell1.append('Show Images');
+
+                checkbox.css({width:'16px'}).attr({type:'checkbox', name:'infostatsmod-platforms-config-showimages', value:'1', checked:showImages});
+                checkbox.appendTo(checkboxcell2);
+                
+                checkboxcell1.appendTo(checkboxrow);
+                checkboxcell2.appendTo(checkboxrow);
+                checkboxrow.appendTo(checkboxtablebody);
+                checkboxtablebody.appendTo(checkboxtable);
+                checkboxtable.appendTo(colCellShowImages);          
+                
+        }
+
+        var colCellImageSize      = m.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
+        {
+                var selecttable       = m.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
+                var selecttablebody   = m.Utils.getNewTableBodyElement(null, '');
+                var selectrow         = m.Utils.getNewTableRowElement();
+                var selectcell1       = m.Utils.getNewTableCellElement(null, '').attr({width:'100px', valign:'middle', align:'left'});
+                var selectcell2       = m.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
+                var select            = $(document.createElement('select'));
+                
+                selectcell1.append('Image size: ');                      
+
+                select.attr({size:1, name:'infostatsmod-platforms-config-imagesize', class:'', width:100});
+                select.append('<option name="" value="small"'+(imageSize=='small'?' selected':'')+'>small</option>');
+                select.append('<option name="" value="medium"'+(imageSize=='medium'?' selected':'')+'>medium</option>');
+                select.append('<option name="" value="large"'+(imageSize=='large'?' selected':'')+'>large</option>');
+                
+                select.appendTo(selectcell2);      
+                
+                selectcell1.appendTo(selectrow);
+                selectcell2.appendTo(selectrow);
+                selectrow.appendTo(selecttablebody);
+                selecttablebody.appendTo(selecttable);
+                selecttable.appendTo(colCellImageSize);
+                
+                
+        }
+
+        var colCellImageCols      = m.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
+        {
+                var selecttable       = m.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
+                var selecttablebody   = m.Utils.getNewTableBodyElement(null, '');
+                var selectrow         = m.Utils.getNewTableRowElement();
+                var selectcell1       = m.Utils.getNewTableCellElement(null, '').attr({width:'100px', valign:'middle', align:'left'});
+                var selectcell2       = m.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
+                var select            = $(document.createElement('select'));
+                
+                selectcell1.append('Columns: '); 
+                
+                select.attr({size:1, name:'infostatsmod-platforms-config-imagecols', class:'', width:100});
+                select.append('<option name="" value="1"'+(imageCols=='1'?' selected':'')+'>1</option>');
+                select.append('<option name="" value="2"'+(imageCols=='2'?' selected':'')+'>2</option>');
+                select.append('<option name="" value="3"'+(imageCols=='3'?' selected':'')+'>3</option>');
+
+                select.appendTo(selectcell2);      
+                
+                selectcell1.appendTo(selectrow);
+                selectcell2.appendTo(selectrow);
+                selectrow.appendTo(selecttablebody);
+                selecttablebody.appendTo(selecttable);
+                selecttable.appendTo(colCellImageCols);      
+                
+        }
+        
+        colCellShowImages.appendTo(colRow1);  
+        colCellImageSize.appendTo(colRow2);  
+        colCellImageCols.appendTo(colRow3);
+        
+        colRow1.appendTo(colBody);
+        colRow2.appendTo(colBody);
+        colRow3.appendTo(colBody);
+        
+        colBody.appendTo(colTable);
+        colTable.appendTo(div);
+        
+        return div;
+    };
+        
     this.getTotalRevenues = function() {
         var games = GameManager.company.gameLog;
         if (games == null || games.length < 1){
@@ -560,7 +734,7 @@ var InfoStatsModAbescoUG_Core = function() {
 
         return {game: canBestGameBeShown ? value : m.LastBestGame, profit: maxprofit};
     };
-    
+            
     // Quick implementation for StatsMod ModalWindow Open and Close Events
     this.ModalWindowApi.opts.onopen = function(e){
 
@@ -626,21 +800,17 @@ var InfoStatsModAbescoUG_Core = function() {
                 case "statsmodshowreleasedgames":
                     m.ReleasedGames.showReleasedGames();
                     break;
-                case "statsmodconfigreleasedgames":
-                    m.ReleasedGames.showConfig();
-                    break;
                 case "statsmodshowplatforms":
                     m.Platforms.showPlatforms();
                     break;
-                case "statsmodconfigplatforms":
-                    m.Platforms.showConfig();
+
+                case "statsmodconfig":
+                    m.showConfig();
                     break;
 
                 case "statsmodnotifications":
                     m.Notifications.showNotifications();
                     break;
-
-
 
                 case "statsmodshowsalesanalysis":
                     m.Analysis.showSalesAnalysis();
@@ -656,8 +826,76 @@ var InfoStatsModAbescoUG_Core = function() {
                     break;
                 case "statsmodtogglefooter":
                     m.Footer.toggleVisibilty();
+                    
+                case "statsmodtestquality":
+                    var q = m.Utils.getGameQuality(GameManager.company.gameLog.last());
+                    console.log(q);
+                break;
                 default:
                     return;
             }
         };  
+        
+    UI.saveInfoStatsModConfig = function (a) {
+        Sound.click();
+        try{
+            {
+                var cols    = m.ReleasedGames.getDataListColumns();
+                var target  = $('#'+m.Config.idReleaseGamesConfigContainer);
+                var checkboxes = target.find('input[type=checkbox]');
+                
+                checkboxes.each(function(){
+                    var name    = $(this).attr('name');    
+                    var visible = $(this).is(':checked');
+                
+                    $.each(cols, function(i, v){
+                        if (v.name == name){
+                            v.visible = visible;
+                        }
+                    });
+                });
+                
+                m.Config.saveReleasedGamesConfig(cols);
+            }
+            {
+                var target          = $('#'+m.Config.idPlatformDetailsConfigContainer);
+                var checkboxes      = target.find('input[type=checkbox]');
+                var selects         = target.find('select');
+                var optShowImages   = false;
+                var optImageSize    = 'small';
+                var optImageCols    = 1;
+                
+                selects.each(function(){
+                    var name      = $(this).attr('name');    
+                    var selected  = $(this).is(':selected');
+                
+                    switch(name){
+                        case 'infostatsmod-platforms-config-imagesize':
+                            optImageSize = $(this).val();
+                        break;
+                        case 'infostatsmod-platforms-config-imagecols':
+                            optImageCols = $(this).val();
+                        break;
+                    }
+                });
+
+                checkboxes.each(function(){
+                    var name      = $(this).attr('name');    
+                    var checked   = $(this).is(':checked');
+                
+                    switch(name){
+                        case 'infostatsmod-platforms-config-showimages':
+                            optShowImages = checked;
+                        break;
+                    }
+                });
+                
+                m.Config.savePlatformsConfig(optShowImages, optImageSize, optImageCols);                
+            }
+            $('#'+m.Config.idConfigStatusContainer).hide().text('Save successful').css({color:'green'}).fadeIn().delay(100).fadeOut();
+        }
+        catch(ex){
+            $('#'+m.Config.idConfigStatusContainer).hide().text('Error! '+ex.message).css({color:'red'}).fadeIn().delay(100).fadeOut();
+        }
+    };         
 };
