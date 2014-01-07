@@ -6,9 +6,9 @@
 **to game sales and financial themes.**
 
 - Launch: 			December 09th, 2013
-- Last Update:  January 05th, 2014
+- Last Update:  January 07th, 2014
 
-#####ChangeLog Version 0.3.3#####
+#####ChangeLog Version 0.4.0#####
 
 
 
