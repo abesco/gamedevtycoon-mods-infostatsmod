@@ -497,7 +497,7 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 return '[none]';
                 
                 case 'Rank':
-                return game.topSalesRank < 0 ? : game.topSalesRank;   
+                return game.topSalesRank < 0 || game.topSalesRank > 100 ? : game.topSalesRank;   
 
                 case 'Release Date':
                 return core.Utils.getRealDateAsIsoDate(game.releaseWeek);
