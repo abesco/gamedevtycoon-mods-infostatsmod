@@ -517,7 +517,7 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
         result.ratio     = result.ratio.toFixed(1);
         
         if (g.technologyPoints + g.designPoints >= 30 && g.designPoints != 0) {
-            var tf = (g.designPoints * ratio - g.technologyPoints) / Math.max(g.designPoints, g.technologyPoints);
+            var tf = (g.designPoints * result.ratio - g.technologyPoints) / Math.max(g.designPoints, g.technologyPoints);
             
             if (tf <= 0.25 && tf >= -0.25) {
                 result.quality += 0.1;
