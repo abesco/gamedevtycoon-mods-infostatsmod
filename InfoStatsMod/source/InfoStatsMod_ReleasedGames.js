@@ -343,93 +343,6 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
             
         };
         
-        // Shows the config for this feature
-        m.showConfig = function() {
-            var div  = $(document.createElement('div'));
-            var cols = m.getDataListColumns();
-            
-            div.attr('id',core.Config.idReleaseGamesConfigContainer);
-            div.append('<h5>Column visibility</h5><hr>');
-            
-            var colspan      = Math.ceil(cols.length / 6);
-            var totalwidth   = 120 * colspan;
-            var colTable     = core.Utils.getNewTableElement({width:totalwidth+'px'},'').attr({border:0, cellpadding:0, cellspacing:0});
-            var colBody      = core.Utils.getNewTableBodyElement(null, '');
-            var colRow       = core.Utils.getNewTableRowElement(null, '');
-            
-            for(var j = 0; j < colspan; j++){
-                var colCell = core.Utils.getNewTableCellElement(null, '').attr({valign:'top', align:'left'});
-                
-                for(var i = j * 6; i < j * 6 + 6; i++){
-                    var v = cols[i];
-                    if (v == null){
-                        continue;
-                    }
-                    
-                    var checkboxtable       = core.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
-                    var checkboxtablebody   = core.Utils.getNewTableBodyElement(null, '');
-                    var checkboxrow         = core.Utils.getNewTableRowElement();
-                    var checkboxcell        = core.Utils.getNewTableCellElement(null, '').attr({valign:'top', align:'left'});
-                    var checkbox            = $(document.createElement('input'));
-                    
-                    checkbox.css({width:'16px'}).attr({type:'checkbox', name:v.name, value:v.name, checked:v.visible});
-                                                 
-                    checkbox.appendTo(checkboxcell);
-                    checkboxcell.appendTo(checkboxrow);
-                    checkboxcell.append(v.name).append('<br>');
-                    checkboxrow.appendTo(checkboxtablebody);
-                    checkboxtablebody.appendTo(checkboxtable);
-                    checkboxtable.appendTo(colCell);
-                    
-                    if (v.name == 'Id'){
-                        checkbox.attr('disabled','true');
-                    }
-
-                    
-                }
-                
-                colCell.appendTo(colRow);
-            }
-            
-            colRow.appendTo(colBody);
-            colBody.appendTo(colTable);
-            colTable.appendTo(div);
-            
-            var saveButton = $(document.createElement('div'));
-            saveButton.text('Save').addClass('selectorButton').addClass('whiteButton').css({height:'24px',width:'80px', margin:'0px', lineHeight:'24px', fontSize:'12pt'});
-            
-            div.append('<hr>')
-            saveButton.appendTo(div);
-            
-            var saveButtonOnClick = '';
-            //' $("#'+core.Config.idReleaseGamesConfigContainer+'").find("input[type=checkbox]").filter(":checked").each(function(i,v){alert(v.name + " = " + v.value);});';
-             
-            saveButton.attr('onClick','javascript:UI.saveInfoStatsModReleasedGamesConfig(this)');
-            
-            core.ModalWindowApi.open(div.html());
-            core.ModalWindowApi.resize(640, 480);
-        };
-
-        UI.saveInfoStatsModReleasedGamesConfig = function (a) {
-            Sound.click();
-            var cols    = m.getDataListColumns();
-            var target  = $(a).parent();
-            var checkboxes = target.find('input[type=checkbox]');
-            
-            checkboxes.each(function(){
-                var name    = $(this).attr('name');    
-                var visible = $(this).is(':checked');
-            
-                $.each(cols, function(i, v){
-                    if (v.name == name){
-                        v.visible = visible;
-                    }
-                });
-            });
-            
-            core.Config.saveReleasedGamesConfig(cols);
-        }; 
-        
         m.createDataListColumn = function(name, type, width, align, visible){
             return {
                     name: name, 
@@ -468,7 +381,9 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                     {name:'Sequel', type:'string', width:100, align:'left', visible:true},
                     {name:'Topic', type:'string', width:100, align:'left', visible:true},
                     {name:'Genre', type:'string', width:100, align:'left', visible:true},
-                    {name:'Publisher', type:'string', width:100, align:'left', visible:true}
+                    {name:'Audience', type:'string', width:100, align:'left', visible:true},
+                    {name:'Publisher', type:'string', width:100, align:'left', visible:true},
+                    {name:'Q', type:'float', width:50, align:'right', visible:true}
                    ];
         };
         
@@ -483,7 +398,7 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
             function preFillNumberWithZeros(a) {
                 return 10 > a ? "0" + a : a
             };
-                
+
             switch(col){
                 case 'Id':
                 return game.id;
@@ -582,7 +497,7 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 return '[none]';
                 
                 case 'Rank':
-                return game.topSalesRank;   
+                return game.topSalesRank < 0 || game.topSalesRank > 100 ? 0 : game.topSalesRank;   
 
                 case 'Release Date':
                 return core.Utils.getRealDateAsIsoDate(game.releaseWeek);
@@ -592,6 +507,13 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
 
                 case 'Genre':
                 return core.Utils.getGenreName(game);
+                
+                case 'Audience':
+                return core.Utils.toTitleCase(game.targetAudience);
+                
+                case 'Q':
+                return isNaN(core.Utils.getGameQuality(game).quality) ? 0 : core.Utils.getGameQuality(game).quality;    
+
             }
             
             return '';
@@ -760,5 +682,7 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
             }
 
             return baseDiv;
-        }         
+        }   
+        
+        return m;      
 };

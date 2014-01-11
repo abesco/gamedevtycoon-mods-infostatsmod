@@ -54,7 +54,7 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
           alert(out);
       };
      
-     this.printObjectMemberNamesInCommonDialog = function(o) {
+    this.printObjectMemberNamesInCommonDialog = function(o) {
           var out = '';
           for (var p in o) {
             out += p + ', ';
@@ -64,8 +64,6 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
           $( "#infostatsmod-common-dialog" ).show();
      };
      
-     
-         
     // Function for quick creating a new table row element
     this.getNewTableRowElement = function(css, content){
             var el = $(document.createElement('tr'));
@@ -286,8 +284,7 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
         return game.secondGenre ? game.genre.name + " - " + game.secondGenre.name : game.genre.name;
     };
     
-    this.toTitleCase = function(str)
-    {
+    this.toTitleCase = function(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     };    
     
@@ -428,4 +425,139 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
     this.hasGameBeenReviewed = function(game){
       return m.isDefined(game) && game.reviewMessageDisplayed;
     };
+    
+    /**
+     * @public
+     * @function getGameQuality
+     * @description Returns the game quality factor
+     * @param {Game} game The game for which you want to acquire the game quality factor
+     * @returns {float} A number indicating the game quality
+    */             
+    this.getGameQuality = function(g){
+        var pi = GameManager.company.gameLog.indexOf(g);
+        var p  = pi > 0 ? pi - 1 : pi ? GameManager.company.gameLog[pi - 1] : null;
+        
+
+        var data = {
+            // This is the optimal techdesign ratio according to: http://gamedevtycoon.wikia.com/wiki/Raw_Data_for_Review_Algorithm/1.4.3
+            tdRatios: [ 1.8, 0.4, 0.6, 1.6, 1.6, 0.5],
+            // Misc Multipliers for calculating 
+            // scores for different games sizes
+            // M1, M2, Optimal Team Size
+            sizes:[ [1, 1, 1],   // Small
+                    [2, 1.2, 3], // Medium
+                    [3, 1.4, 5], // Large
+                    [6, 1.6, 6]  // AAA
+                  ],
+            tdFactor: 0,
+            sizeIndex: -1
+        };
+        
+        var game = {
+            topic:                      g.topic,
+            genre:                      g.genre,
+            secondGenre:                g.secondGenre,
+            genreIndex:                 GameGenre.getAll().indexOf(g.genre),
+            secondGenreIndex:           GameGenre.getAll().indexOf(g.secondGenre),
+            platformGenreWeightings:    g.topic.genreWeightings,
+            audienceWeightings:         g.topic.audienceWeightings,
+            tdRatio:                    data.tdRatios[this.secondGenreIndex],
+            sequel:                     g.flags.sequel,
+            extensionPack:              g.flags.isExtensionPack,
+            mmo:                        g.flags.mmo
+        };
+        
+        var prev = {
+            topic:                      p != null ? p.topic : null,
+            genre:                      p != null ? p.genre : null,
+            secondGenre:                p != null ? p.secondGenre : null,
+            genreIndex:                 p != null ? GameGenre.getAll().indexOf(p.genre) : null,
+            secondGenreIndex:           p != null ? GameGenre.getAll().indexOf(p.secondGenre) : null,
+            platformGenreWeightings:    p != null ? p.topic != null ? p.topic.genreWeightings : null : null,
+            audienceWeightings:         p != null ? p.topic != null ? p.topic.audienceWeightings : null : null,
+            tdRatio:                    p != null ? data.tdRatios[this.secondGenreIndex] : null,
+            sequel:                     p != null ? p.flags != null ? p.flags.sequel : null : null,
+            extensionPack:              p != null ? p.flags != null ? pp.flags.isExtensionPack : null : null,
+            mmo:                        p != null ? p.flags != null ? pp.flags.mmo : null : null,
+            exists:                     p != null
+        };
+
+        var result = {
+            ratio: 0,
+            tdRatio: 0,
+            quality: 1,
+            same: false
+        };
+
+        switch(g.gameSize){
+            case 'small':
+                data.sizeIndex = 0;
+            break;
+            case 'medium':
+                data.sizeIndex = 1;
+            break;
+            case 'large':
+                data.sizeIndex = 2;
+            break;
+            case 'aaa':
+                data.sizeIndex = 3;
+            break;
+        }
+        
+        data.tdFactor = (g.designPoints + g.technologyPoints) / (data.sizes[data.sizeIndex][1] * 2)
+        
+        // Get the optimal ratio
+        result.ratio = game.tdRatio;
+        
+        if (game.secondGenreIndex != 6) {
+            result.ratio = (result.ratio * 2 / 3) + (data.tdRatios[game.secondGenreIndex] / 3);
+        }
+        
+        result.tdRatio   = (g.technologyPoints / g.designPoints).toFixed(1);
+        result.ratio     = result.ratio.toFixed(1);
+        
+        if (g.technologyPoints + g.designPoints >= 30 && g.designPoints != 0) {
+            var tf = (g.designPoints * result.ratio - g.technologyPoints) / Math.max(g.designPoints, g.technologyPoints);
+            
+            if (tf <= 0.25 && tf >= -0.25) {
+                result.quality += 0.1;
+            }
+            else if (tf >  0.5  || tf <  -0.5)  {
+                result.quality -= 0.1;
+            }
+        }
+        
+        // Assuming that optimal (slider) values have been applied 
+        // NOTE: This must be changed to 
+        result.quality += 0.2;
+        result.same = false;   
+        
+        // The following calculations are only valid if there are more than 1 game released (basically for 99,9% of the game :P)
+        if(prev != null){
+            // If this game has the same topic/genre/genre2 combination, -0.4 penalty
+            if (game.topic == prev.topic && 
+                game.genreIndex == prev.genreIndex && 
+                game.secondGenreIndex == prev.secondGenreIndex && 
+                !game.sequel && !game.extensionPack) {
+                
+                    result.quality -= 0.4;
+                    result.same = true;
+            }
+            // Provide calculations for MMO and for Topic/Genre/SecondGenre combination < 1. Subtract 0.15 from quality
+            if (game.mmo && (game.platformGenreWeightings[game.genreIndex + 1] < 1 || 
+                (prev.secondGenreIndex != 6 && prev.platformGenreWeightings[prev.secondGenreIndex + 1] < 1))) {
+                result.quality -= 0.15;
+            }
+        }
+        
+        // Process game sequel
+        // Note:
+        // If it is not a sequel or expansion within a time range of 40 weeks then -0.4
+        // If it is not a sequel on the same engine then -0.1
+        if (game.sequel) {
+            result.quality += 0.2;
+        }
+
+        return {quality: result.quality, optimalRatio: result.ratio, tdRatio: result.tdRatio};
+    };    
 }

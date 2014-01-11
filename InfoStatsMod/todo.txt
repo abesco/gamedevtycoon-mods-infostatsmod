@@ -1,0 +1,8 @@
+Hexatan:
+- Hi, I see a little think in the release details when a game are not rank (over 100) a "-1" is written.
+  Nothing serious but you can add processing of this in a future release.
+
+Haxor:
+- And, can You make stats for CustomConsole, their sales, profit etc.
+- And, maybe You can do that with CustomComputers too?
+- And, yeah one stupid graphic bug, in consoles info, just images are out of frame.
