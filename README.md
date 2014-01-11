@@ -1,5 +1,4 @@
-###InfoStatsMod Expansion Module - Development Branch###
-####Do not use. For development purposes only####
+###InfoStatsMod Expansion Module - Version specific release branch###
 *************************************************************************************************
 
 **Provides detailed information and statistics to games released, provides charts and analysis **
