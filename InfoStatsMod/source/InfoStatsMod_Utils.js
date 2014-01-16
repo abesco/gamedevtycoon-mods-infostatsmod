@@ -426,6 +426,16 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
       return m.isDefined(game) && game.reviewMessageDisplayed;
     };
     
+    this.getGame = function(id){
+        var gmc = GameManager.company;
+        for(var i = 0; i < gmc.gameLog.length; i++){
+            if (gmc.gameLog[i].id == id){
+                return gmc.gameLog[i];
+            }
+        }                    
+        return;
+    };
+    
     /**
      * @public
      * @function getGameQuality

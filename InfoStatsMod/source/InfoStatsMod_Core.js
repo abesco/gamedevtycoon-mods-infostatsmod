@@ -2,11 +2,13 @@
 * Name:                 InfoStatsMod
 * Class:                InfoStatsModAbescoUG_Core   
 * Description:          Core Class for the InfoStatsMod
-* Copyright:            © 2013 Francesco Abbattista
+* Copyright:            © 2013, 2014 Francesco Abbattista
 * Url:                  http://www.abesco.de/
 */
 
 var InfoStatsModAbescoUG_Core = function() {
+    var self = this;
+
     this.Company        = GameManager.company;
     this.ContextMenu    = UI._showContextMenu;
     this.DocumentBody   = $("body");
@@ -26,48 +28,55 @@ var InfoStatsModAbescoUG_Core = function() {
     var $modalWindowObj     = $('body').modalWindow({ zIndex: 9001, blur: false, overlay: true}, 'statsMod');
     this.ModalWindowApi     = $modalWindowObj.data('statsMod-modal_statsMod');
         
-    var m = this;
     var _showContextMenuOrigFunc = UI._showContextMenu;
     
+    self.showCurrentGameDetails = function(game){
+        self.ReleasedGames.showGameDetailAsWindow(game,true);
+    };
+    
+    // Setup the module and make it available in-game
     this.setup = function() {
+        
         // Embed custom css
-        m.embedCustomCSS();
+        self.embedCustomCSS();
         
         // Container for an overlay: -->
-        m.DocumentBody.append('<div id="InfoStatsModContainerModalOverlay" class="ow-overlay ow-closed"></div>');
+        self.DocumentBody.append('<div id="InfoStatsModContainerModalOverlay" class="ow-overlay ow-closed"></div>');
 
         // Container for a modal window: -->
-        m.DocumentBody.append('<div id="InfoStatsModContainer" class="windowBorder tallWindow" style="overflow:auto;display:none;"> <div id="InfoStatsModTop" class="windowTitle smallerWindowTitle">Information and Statistics</div>');
-        m.DocumentBody = $('#'+m.Config.idContainer);
-        m.DocumentBody.append('<div id="StatsModContainerLabel1" style="text-align:center;margin-left:50px;width: 450px">Main</div>');
-        m.DocumentBody.append('<div id="statsmodshowreleasedgames" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Release Details</div>');
-        m.DocumentBody.append('<div id="statsmodshowplatforms" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Platform Details</div>');
+        self.DocumentBody.append('<div id="InfoStatsModContainer" class="windowBorder tallWindow" style="overflow:auto;display:none;"> <div id="InfoStatsModTop" class="windowTitle smallerWindowTitle">Information and Statistics</div>');
+        self.DocumentBody = $('#'+self.Config.idContainer);
+        self.DocumentBody.append('<div id="StatsModContainerLabel1" style="text-align:center;margin-left:50px;width: 450px">Main</div>');
+        self.DocumentBody.append('<div id="statsmodshowreleasedgames" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Release Details</div>');
+        self.DocumentBody.append('<div id="statsmodshowplatforms" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Platform Details</div>');
 
         
-        m.DocumentBody.append('<div id="StatsModContainerLabel2" style="text-align:center;margin-left:50px;width: 450px">Settings</div>');
+        self.DocumentBody.append('<div id="StatsModContainerLabel2" style="text-align:center;margin-left:50px;width: 450px">Settings</div>');
 
-        m.DocumentBody.append('<div id="statsmodconfig" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Config</div>');
-        m.DocumentBody.append('<div id="statsmodresetsettings" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Reset Configs</div>');
+        self.DocumentBody.append('<div id="statsmodconfig" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Config</div>');
+        self.DocumentBody.append('<div id="statsmodresetsettings" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Reset Configs</div>');
         
         // --> Disable on releases
-        // --> m.DocumentBody.append('<div id="" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Sales Analysis</div>');
+        // --> self.DocumentBody.append('<div id="" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Sales Analysis</div>');
 
-        m.DocumentBody.append('<div id="StatsModContainerLabel3" style="text-align:center;margin-left:50px;width: 450px">Miscellaneous</div>');
-        m.DocumentBody.append('<div id="statsmodtogglefooter" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Toggle Footer</div>');
-        m.DocumentBody.append('<div id="statsmodnotifications" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Notifications</div>');
-        m.DocumentBody.append('<div id="statsmodtogglepause" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Toggle Pause</div>');
+        self.DocumentBody.append('<div id="StatsModContainerLabel3" style="text-align:center;margin-left:50px;width: 450px">Miscellaneous</div>');
+        self.DocumentBody.append('<div id="statsmodtogglefooter" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Toggle Footer</div>');
+        self.DocumentBody.append('<div id="statsmodnotifications" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Notifications</div>');
+        self.DocumentBody.append('<div id="statsmodtogglepause" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Toggle Pause</div>');
 
-        // m.DocumentBody.append('<div id="statsmodtestquality" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Quality Test</div>');
+        // self.DocumentBody.append('<div id="statsmodx1" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Toggle Pause</div>');
 
-        m.DocumentBody.append('<div id="StatsModContainerLabel5" style="text-align:center;margin-left:50px;width: 450px"><br><br>InfoStatsMod Expansion <font size="-1"><sup><i>version '+InfoStatsModAbescoUG.VERSION+'</i></sup></font><br><font size="-2">(c) 2014 Francesco Abbattista</font></div>');
+        // self.DocumentBody.append('<div id="statsmodtestquality" class="selectorButton whiteButton" onclick="UI.selectInfoStatsModItemClickHandler(this)" style="display:inline-block;position: relative;margin-left:50px;width: 202px;" >Quality Test</div>');
 
-        m.DocumentBody.append('<div id="infostatmod-common-dialog" title="InfoStatsMod">');
-        m.DocumentBody.append('</div>');
+        self.DocumentBody.append('<div id="StatsModContainerLabel5" style="text-align:center;margin-left:50px;width: 450px"><br><br>InfoStatsMod Expansion <font size="-1"><sup><i>version '+InfoStatsModAbescoUG.VERSION+'</i></sup></font><br><font size="-2">(c) 2014 Francesco Abbattista</font></div>');
+
+        self.DocumentBody.append('<div id="infostatmod-common-dialog" title="InfoStatsMod">');
+        self.DocumentBody.append('</div>');
 
         
-        m.Footer.setup();
-        m.Footer.setContent("<div style='text-align:center'>InfoStatsMod Expansion <font size='-1'><sup><i>version "+InfoStatsModAbescoUG.VERSION+"</i></sup></font></div>");
-        m.Footer.show();
+        self.Footer.setup();
+        self.Footer.setContent("<div style='text-align:center'>InfoStatsMod Expansion <font size='-1'><sup><i>version "+InfoStatsModAbescoUG.VERSION+"</i></sup></font></div>");
+        self.Footer.show();
 
         $( "#infostatsmod-common-dialog" ).dialog();
         $( "#infostatsmod-common-dialog" ).hide();
@@ -77,16 +86,52 @@ var InfoStatsModAbescoUG_Core = function() {
         // GDT.on(GDT.eventKeys.ui.dialogClose, dialogClose);
         // GDT.on(GDT.eventKeys.ui.contextMenuShowing, contextMenuShowing);
         // GDT.on(GDT.eventKeys.ui.beforeShowingNotification, contextMenuBeforeShow);
-        GDT.on(GDT.eventKeys.gameplay.weekProceeded, m.weekProceeded);
-          
+        GDT.on(GDT.eventKeys.gameplay.weekProceeded, self.weekProceeded);
+                  
+        (function() {
+            var proxied = UI.addSalesCard;
+                UI.addSalesCard = function (a, b, c, d, e, f, g, h, i, j, k, l) {
+                    console.log("addSalesCard");
+                    proxied.apply( this, arguments );
+
+                    var cards = $('#gameSalesContainer').find('.gameSalesCard');
+                    cards.css({cursor:'pointer'});
+                    cards.click(function(e){
+                        self.showCurrentGameDetails(game);
+                    });
+
+                    var game = self.Utils.getGame(a);
+
+                    var config = self.Config.loadNotifications();
+                    var showReleaseDetailAvailableNotifications  = config != null ? config.showReleaseDetailAvailableNotifications : null; 
+                                
+                    if(showReleaseDetailAvailableNotifications){
+                        GameManager.company.notifications.push(self.Notifications.getReleaseDetailsAvailNotification(game));
+                    }
+                };
+        })();
+        (function() {
+            var proxied = UI.updateSalesCard;
+                UI.updateSalesCard = function (a, b, c, d, e, f, g, h, i) {
+                    console.log("updateSalesCard");
+                    proxied.apply( this, arguments );
+                };
+        })();
+        (function() {
+            var proxied = UI.removeSalesCard;
+                UI.removeSalesCard = function (a,b) {
+                    console.log("removeSalesCard");
+                    proxied.apply( this, arguments );
+                };
+        })();                
     };    
           
-     /* Event Handlers */
+    // Event handler for week proceeded. This is triggered whenever a week has passed
     this.weekProceeded = function(e) {
         try {
         
             
-            var config = m.Config.loadNotifications();
+            var config = self.Config.loadNotifications();
             var showBestGameNotifications = config != null ? config.showBestGameNotifications : null;
             var showReleaseDetailAvailableNotifications  = config != null ? config.showReleaseDetailAvailableNotifications : null; 
             
@@ -98,46 +143,46 @@ var InfoStatsModAbescoUG_Core = function() {
                 showReleaseDetailAvailableNotifications = true;
             }
 
-            var bestGame = m.getBestGame();
+            var bestGame = self.getBestGame();
             var lastGame = GameManager.company.gameLog.last();
             
             /*
-            if ( m.AvailGameNotify != null){
-                if ( m.AvailGameNotify.salesCashLog != null && m.AvailGameNotify.salesCashLog.length > 0){
+            if ( self.AvailGameNotify != null){
+                if ( self.AvailGameNotify.salesCashLog != null && self.AvailGameNotify.salesCashLog.length > 0){
                     if ( showReleaseDetailAvailableNotifications ) {    
-                        GameManager.company.notifications.push(m.Notifications.getReleaseDetailsAvailNotification());
+                        GameManager.company.notifications.push(self.Notifications.getReleaseDetailsAvailNotification());
                     }
                 
-                    m.AvailGameNotify = null;
+                    self.AvailGameNotify = null;
                 }
             }
             */
             
             /*
             if ( GameManager.company.currentGame && GameManager.company.currentGame.salesCashLog != null && GameManager.company.currentGame.salesCashLog.length > 0 ){
-                m.AvailGameNotify = GameManager.company.currentGame;
+                self.AvailGameNotify = GameManager.company.currentGame;
             }
             */
 
-            if (m.Utils.isDefined(bestGame.game)){
+            if (self.Utils.isDefined(bestGame.game)){
                 // We have a best game, check if it's different than our last best game
 
-                if (!m.Utils.isDefined(m.LastBestGame) || (m.LastBestGame != bestGame.game) && bestGame.game == lastGame){
+                if (!self.Utils.isDefined(self.LastBestGame) || (self.LastBestGame != bestGame.game) && bestGame.game == lastGame){
                     // Now we know it's a released and reviewed game since getBestGame already filters it!
-                    var profitOld = m.Utils.isDefined(m.LastBestGame) ? m.LastBestGame.revenue - m.LastBestGame.costs : 0;
+                    var profitOld = self.Utils.isDefined(self.LastBestGame) ? self.LastBestGame.revenue - self.LastBestGame.costs : 0;
                     var profitNew = bestGame.revenue - bestGame.costs;
-                    var anotherRecord = m.Utils.isDefined(m.LastBestGame) && m.LastBestGame.game.id == bestGame.game.id && profitNew > profitOld;
+                    var anotherRecord = self.Utils.isDefined(self.LastBestGame) && self.LastBestGame.game.id == bestGame.game.id && profitNew > profitOld;
                     
-                    m.LastBestGame = bestGame;
+                    self.LastBestGame = bestGame;
                     
                     // If we want to show Best Game Notification, we do it here by pushing a notification into pipeline
-                    if ( showBestGameNotifications ) {    
+                    if (showBestGameNotifications) {    
                         // We need to check if this game has been already nominated as best game
                         if(!anotherRecord){
-                            GameManager.company.notifications.push(m.Notifications.getBestGameNotification());
+                            GameManager.company.notifications.push(self.Notifications.getBestGameNotification());
                         }
                         else {
-                            GameManager.company.notifications.push(m.Notifications.getBestGameBreaksRecordsNotification());
+                            GameManager.company.notifications.push(self.Notifications.getBestGameBreaksRecordsNotification());
                         }
                     }
                 }
@@ -145,7 +190,7 @@ var InfoStatsModAbescoUG_Core = function() {
             }
 
             // Update the footer overlay
-            m.Footer.updateContent(e.company);
+            self.Footer.updateContent(e.company);
                         
         }
         catch(e) {
@@ -158,7 +203,7 @@ var InfoStatsModAbescoUG_Core = function() {
     };
         
     // Function to embed custom css by dynamically changing the <HEAD></HEAD> block
-    m.embedCustomCSS = function(){
+    self.embedCustomCSS = function(){
         var $ = document; // shortcut
         var cssId = 'StatsModCSSAbescoUG';  
         if (!$.getElementById(cssId))
@@ -178,12 +223,13 @@ var InfoStatsModAbescoUG_Core = function() {
         }
     }
    
-    m.getGameDetailElement = function (game) {
+    // Returns a jQuery wrapped div element containing a detailed analysis of a game
+    self.getGameDetailElement = function (game) {
                        
         var releaseDate         = GameManager.company.getDate(game.releaseWeek);
         var gameTitle           = game.title;
         var gameId              = game.id;
-        var gameTopic           = m.Utils.getDetailedTopicName(game);
+        var gameTopic           = self.Utils.getDetailedTopicName(game);
         var gameGenre           = game.getGenreDisplayName();
         
         var gameCosts           = UI.getShortNumberString(game.costs);
@@ -205,7 +251,7 @@ var InfoStatsModAbescoUG_Core = function() {
         var $divPlatforms   = $(document.createElement('div')).attr('id','statsMod-GameDetails-platforms');
         var $title          = $(document.createElement('h3')).css('text-align','center');
         var $genre          = $(document.createElement('h5')).css('text-align','center');
-        var $ratingTotal    = $(document.createElement('h5')).css('text-align','center').append(m.Utils.getRatingStarsAsDivElement(averageScore, true, 1));
+        var $ratingTotal    = $(document.createElement('h5')).css('text-align','center').append(self.Utils.getRatingStarsAsDivElement(averageScore, true, 1));
         
         $div.css('border','1px solid #cccccc').css('-webkit-box-shadow','0 0 5px#888').css('box-shadow','0 0 5px #888'); 
         
@@ -213,19 +259,19 @@ var InfoStatsModAbescoUG_Core = function() {
         $genre.text(gameGenre);
         
         // Acquire the platforms
-        $divPlatforms.append(m.Utils.getGamePlatformImagesAsDivElement(game));
+        $divPlatforms.append(self.Utils.getGamePlatformImagesAsDivElement(game));
         
         // Acquire every rating obtained by magazines, acquire engine specs
-        var $tableMagazines     = m.getMagazineReviewsAsTableElement(game);
+        var $tableMagazines     = self.getMagazineReviewsAsTableElement(game);
         
-        var $tableEngineSpecs   = m.ReleasedGames.getEngineSpecsDataListContainerElement(game);
-        var $tableSales         = m.getGameSalesDetailsAsTableElement(game);
+        var $tableEngineSpecs   = self.ReleasedGames.getEngineSpecsDataListContainerElement(game);
+        var $tableSales         = self.getGameSalesDetailsAsTableElement(game);
        
         // Pre-Create the details div (header, platforms, info & rating area)
         $div.append($title).append($genre).append($ratingTotal).append($divPlatforms);
 
         // Create TABS in Details Window Div
-        $div.append(m.getGameDetailsTabs());
+        $div.append(self.getGameDetailsTabs());
         
         // Process REVIEWS TAB (tab #1)
         var $gamedetailsTab1 = $div.find('#gamedetails-tabs-1');
@@ -243,7 +289,7 @@ var InfoStatsModAbescoUG_Core = function() {
             $gamedetailsTab3.append($tableSales).append($divSalesWeekly);
             
                       
-        var weeklySalesObj =  m.getGameSalesWeeklyAsDivElement(game);
+        var weeklySalesObj =  self.getGameSalesWeeklyAsDivElement(game);
         var $divPlaceholder = weeklySalesObj[0];
         var weeklySalesData = weeklySalesObj[1];
         
@@ -295,7 +341,7 @@ var InfoStatsModAbescoUG_Core = function() {
         return $div;
     };
     
-    m.getGameDetailsTabs = function() {
+    self.getGameDetailsTabs = function() {
         var retHtml = '';
         
         $.ajax({
@@ -309,7 +355,7 @@ var InfoStatsModAbescoUG_Core = function() {
         return retHtml;
     }
         
-    m.getMagazineReviewsAsTableElement = function(game) {
+    self.getMagazineReviewsAsTableElement = function(game) {
         var averageScore = game.reviews.average(function (a) { return a.score });
 
         // Show every rating obtained by magazines
@@ -333,7 +379,7 @@ var InfoStatsModAbescoUG_Core = function() {
            var $tableCell4Magazines = $(document.createElement('td'));
 
            $tableCell1Magazines.text(game.reviews[i].reviewerName);
-           $tableCell2Magazines.append(m.Utils.getRatingStarsAsDivElement(game.reviews[i].score, false, 0.6));
+           $tableCell2Magazines.append(self.Utils.getRatingStarsAsDivElement(game.reviews[i].score, false, 0.6));
            $tableCell3Magazines.text(game.reviews[i].score);
            $tableCell4Magazines.text(game.reviews[i].message);
 
@@ -350,7 +396,7 @@ var InfoStatsModAbescoUG_Core = function() {
 
            $tableCell1Magazines.append('Game Quality');
            $tableCell2Magazines.append('');
-           $tableCell3Magazines.append('' + (isNaN(m.Utils.getGameQuality(game).quality) ? 0 : m.Utils.getGameQuality(game).quality));
+           $tableCell3Magazines.append('' + (isNaN(self.Utils.getGameQuality(game).quality) ? 0 : self.Utils.getGameQuality(game).quality));
            $tableCell4Magazines.append('Overall calculated game quality (max. 1.4)');
 
            $tableRowMagazines.append($tableCell1Magazines).append($tableCell2Magazines).append($tableCell3Magazines).append($tableCell4Magazines);
@@ -362,7 +408,7 @@ var InfoStatsModAbescoUG_Core = function() {
         return $tableMagazines;
     };
     
-    m.getGameSalesDetailsAsTableElement = function(game) {
+    self.getGameSalesDetailsAsTableElement = function(game) {
         var $tableSales     = $(document.createElement('table')).attr('width','100%');
         var $tableBodySales = $(document.createElement('tbody'));
 
@@ -425,7 +471,7 @@ var InfoStatsModAbescoUG_Core = function() {
         return $tableSales;  
     };
     
-    m.getGameSalesWeeklyAsDivElement = function (game) {
+    self.getGameSalesWeeklyAsDivElement = function (game) {
         var releaseWeek     = 1;
         var releaseWeekReal = game.releaseWeek;
         var log             = game.salesCashLog;
@@ -461,25 +507,25 @@ var InfoStatsModAbescoUG_Core = function() {
                 
     };
 
-    m.showConfig = function() {
+    self.showConfig = function() {
         var configContainer = $(document.createElement('div'));
-        var releasedGames   = m.getConfigReleasedGames();
-        var platformDetails = m.getConfigPlatformsDetails();
-        var saveButton      = m.getConfigSaveButton();
+        var releasedGames   = self.getConfigReleasedGames();
+        var platformDetails = self.getConfigPlatformsDetails();
+        var saveButton      = self.getConfigSaveButton();
         var status          = $(document.createElement('div'));
         
-        status.attr('id', m.Config.idConfigStatusContainer);
+        status.attr('id', self.Config.idConfigStatusContainer);
         status.css({width:'100%',textAlign:'center'});
         
         configContainer.append(releasedGames, '<br><br>',platformDetails, '<br><hr><br>', saveButton, '<br><br>', status);
 
         var html = configContainer.html();
         
-        m.ModalWindowApi.open(html);
-        m.ModalWindowApi.resize(640, 480);                
+        self.ModalWindowApi.open(html);
+        self.ModalWindowApi.resize(640, 480);                
     };
     
-    m.getConfigSaveButton = function() {
+    self.getConfigSaveButton = function() {
         var saveButton = $(document.createElement('div'));
         saveButton.text('Save').addClass('selectorButton').addClass('whiteButton').css({height:'24px',width:'80px', margin:'0px', lineHeight:'24px', fontSize:'12pt'});
         saveButton.attr('onClick','javascript:UI.saveInfoStatsModConfig(this)');
@@ -487,22 +533,22 @@ var InfoStatsModAbescoUG_Core = function() {
         return saveButton;
     };
     
-    m.getConfigReleasedGames = function() {
+    self.getConfigReleasedGames = function() {
         var div  = $(document.createElement('div'));
-        var cols = m.ReleasedGames.getDataListColumns();
+        var cols = self.ReleasedGames.getDataListColumns();
         
-        div.attr('id',m.Config.idReleaseGamesConfigContainer);
+        div.attr('id',self.Config.idReleaseGamesConfigContainer);
         div.append('<h5>Released Games</h5><hr>');
         div.append('<font size="-2">Column visibility</font><br><br>');
         
         var colspan      = Math.ceil(cols.length / 6);
         var totalwidth   = 120 * colspan;
-        var colTable     = m.Utils.getNewTableElement({width:totalwidth+'px'},'').attr({border:0, cellpadding:0, cellspacing:0});
-        var colBody      = m.Utils.getNewTableBodyElement(null, '');
-        var colRow       = m.Utils.getNewTableRowElement(null, '');
+        var colTable     = self.Utils.getNewTableElement({width:totalwidth+'px'},'').attr({border:0, cellpadding:0, cellspacing:0});
+        var colBody      = self.Utils.getNewTableBodyElement(null, '');
+        var colRow       = self.Utils.getNewTableRowElement(null, '');
         
         for(var j = 0; j < colspan; j++){
-            var colCell = m.Utils.getNewTableCellElement(null, '').attr({valign:'top', align:'left'});
+            var colCell = self.Utils.getNewTableCellElement(null, '').attr({valign:'top', align:'left'});
             
             for(var i = j * 6; i < j * 6 + 6; i++){
                 var v = cols[i];
@@ -510,10 +556,10 @@ var InfoStatsModAbescoUG_Core = function() {
                     continue;
                 }
                 
-                var checkboxtable       = m.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
-                var checkboxtablebody   = m.Utils.getNewTableBodyElement(null, '');
-                var checkboxrow         = m.Utils.getNewTableRowElement();
-                var checkboxcell        = m.Utils.getNewTableCellElement(null, '').attr({valign:'top', align:'left'});
+                var checkboxtable       = self.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
+                var checkboxtablebody   = self.Utils.getNewTableBodyElement(null, '');
+                var checkboxrow         = self.Utils.getNewTableRowElement();
+                var checkboxcell        = self.Utils.getNewTableCellElement(null, '').attr({valign:'top', align:'left'});
                 var checkbox            = $(document.createElement('input'));
                 
                 checkbox.css({width:'16px'}).attr({type:'checkbox', name:v.name, value:v.name, checked:v.visible});
@@ -542,8 +588,8 @@ var InfoStatsModAbescoUG_Core = function() {
        return div;
     };
     
-    m.getConfigPlatformsDetails = function() {
-        var config     = m.Config.loadPlatformsConfig();
+    self.getConfigPlatformsDetails = function() {
+        var config     = self.Config.loadPlatformsConfig();
         var showImages = config != null ? config.showPlatformImages : null;
         var imageSize  = config != null ? config.platformImageSize : null;
         var imageCols  = config != null ? config.platformImageColumnCount : null;
@@ -560,22 +606,22 @@ var InfoStatsModAbescoUG_Core = function() {
         
         var div  = $(document.createElement('div'));
         
-        div.attr('id',m.Config.idPlatformDetailsConfigContainer);
+        div.attr('id',self.Config.idPlatformDetailsConfigContainer);
         div.append('<h5>Platform Details</h5><hr>');
         
-        var colTable     = m.Utils.getNewTableElement({width:'360px'},'').attr({border:0, cellpadding:0, cellspacing:0});
-        var colBody      = m.Utils.getNewTableBodyElement(null, '');
-        var colRow1      = m.Utils.getNewTableRowElement(null, '');
-        var colRow2      = m.Utils.getNewTableRowElement(null, '');
-        var colRow3      = m.Utils.getNewTableRowElement(null, '');
+        var colTable     = self.Utils.getNewTableElement({width:'360px'},'').attr({border:0, cellpadding:0, cellspacing:0});
+        var colBody      = self.Utils.getNewTableBodyElement(null, '');
+        var colRow1      = self.Utils.getNewTableRowElement(null, '');
+        var colRow2      = self.Utils.getNewTableRowElement(null, '');
+        var colRow3      = self.Utils.getNewTableRowElement(null, '');
         
-        var colCellShowImages      = m.Utils.getNewTableCellElement(null, '').attr({ valign:'top', align:'left'});
+        var colCellShowImages      = self.Utils.getNewTableCellElement(null, '').attr({ valign:'top', align:'left'});
         {
-                var checkboxtable       = m.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
-                var checkboxtablebody   = m.Utils.getNewTableBodyElement(null, '');
-                var checkboxrow         = m.Utils.getNewTableRowElement();
-                var checkboxcell1       = m.Utils.getNewTableCellElement(null, '').attr({width:'100px', valign:'middle', align:'left'});
-                var checkboxcell2       = m.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
+                var checkboxtable       = self.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
+                var checkboxtablebody   = self.Utils.getNewTableBodyElement(null, '');
+                var checkboxrow         = self.Utils.getNewTableRowElement();
+                var checkboxcell1       = self.Utils.getNewTableCellElement(null, '').attr({width:'100px', valign:'middle', align:'left'});
+                var checkboxcell2       = self.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
                 var checkbox            = $(document.createElement('input'));
                 
                 checkboxcell1.append('Show Images');
@@ -591,13 +637,13 @@ var InfoStatsModAbescoUG_Core = function() {
                 
         }
 
-        var colCellImageSize      = m.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
+        var colCellImageSize      = self.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
         {
-                var selecttable       = m.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
-                var selecttablebody   = m.Utils.getNewTableBodyElement(null, '');
-                var selectrow         = m.Utils.getNewTableRowElement();
-                var selectcell1       = m.Utils.getNewTableCellElement(null, '').attr({width:'100px', valign:'middle', align:'left'});
-                var selectcell2       = m.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
+                var selecttable       = self.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
+                var selecttablebody   = self.Utils.getNewTableBodyElement(null, '');
+                var selectrow         = self.Utils.getNewTableRowElement();
+                var selectcell1       = self.Utils.getNewTableCellElement(null, '').attr({width:'100px', valign:'middle', align:'left'});
+                var selectcell2       = self.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
                 var select            = $(document.createElement('select'));
                 
                 selectcell1.append('Image size: ');                      
@@ -618,13 +664,13 @@ var InfoStatsModAbescoUG_Core = function() {
                 
         }
 
-        var colCellImageCols      = m.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
+        var colCellImageCols      = self.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
         {
-                var selecttable       = m.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
-                var selecttablebody   = m.Utils.getNewTableBodyElement(null, '');
-                var selectrow         = m.Utils.getNewTableRowElement();
-                var selectcell1       = m.Utils.getNewTableCellElement(null, '').attr({width:'100px', valign:'middle', align:'left'});
-                var selectcell2       = m.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
+                var selecttable       = self.Utils.getNewTableElement({width:'100%'}).attr({border:0, cellpadding:0, cellspacing:0});
+                var selecttablebody   = self.Utils.getNewTableBodyElement(null, '');
+                var selectrow         = self.Utils.getNewTableRowElement();
+                var selectcell1       = self.Utils.getNewTableCellElement(null, '').attr({width:'100px', valign:'middle', align:'left'});
+                var selectcell2       = self.Utils.getNewTableCellElement(null, '').attr({valign:'middle', align:'left'});
                 var select            = $(document.createElement('select'));
                 
                 selectcell1.append('Columns: '); 
@@ -673,7 +719,7 @@ var InfoStatsModAbescoUG_Core = function() {
     };
     
     this.getTotalProfit = function() {
-        return m.getTotalRevenues() - m.getTotalCosts();
+        return self.getTotalRevenues() - self.getTotalCosts();
     };
     
     this.getTotalCosts = function() {
@@ -708,7 +754,7 @@ var InfoStatsModAbescoUG_Core = function() {
     };
     
     this.getBestGame = function() {
-        var games   = m.getGamesWithHighestScore();
+        var games   = self.getGamesWithHighestScore();
         if ( games == null || games.length < 1){
             return null;
         }
@@ -730,9 +776,9 @@ var InfoStatsModAbescoUG_Core = function() {
             }
         }
         
-        var canBestGameBeShown = m.Utils.hasGameBeenReviewed(value);
+        var canBestGameBeShown = self.Utils.hasGameBeenReviewed(value);
 
-        return {game: canBestGameBeShown ? value : m.LastBestGame, profit: maxprofit};
+        return {game: canBestGameBeShown ? value : self.LastBestGame, profit: maxprofit};
     };
             
     // Quick implementation for StatsMod ModalWindow Open and Close Events
@@ -744,12 +790,12 @@ var InfoStatsModAbescoUG_Core = function() {
         Sound.click();
         $modalWindowObj.find('.statsMod-modal-content').first().children().remove();
 
-        var $match = $('body').find('#'+m.Config.idMainModalWindowOverlay);
+        var $match = $('body').find('#'+self.Config.idMainModalWindowOverlay);
         if ($match && $match.length > 0){
             $match.remove();
         }
         
-        $match = $('body').find('#'+m.Config.idMainModalWindowOverlayContainer);
+        $match = $('body').find('#'+self.Config.idMainModalWindowOverlayContainer);
         if ($match && $match.length > 0){
             $match.remove();
         }
@@ -782,13 +828,13 @@ var InfoStatsModAbescoUG_Core = function() {
             })
 
             // Scroll to top div
-            m.DocumentBody.animate({
-                scrollTop: $('#'+m.Config.idContextMenuTopArea).offset().top
+            self.DocumentBody.animate({
+                scrollTop: $('#'+self.Config.idContextMenuTopArea).offset().top
             }, 2000);
             
            
             // Calling the original context menu
-            m.ContextMenu(b, c, d, h);
+            self.ContextMenu(b, c, d, h);
     };
     
     // Attach to and extend by overriding it, the main context menu
@@ -798,22 +844,22 @@ var InfoStatsModAbescoUG_Core = function() {
             Sound.click();
             switch (a.id) {
                 case "statsmodshowreleasedgames":
-                    m.ReleasedGames.showReleasedGames();
+                    self.ReleasedGames.showReleasedGames();
                     break;
                 case "statsmodshowplatforms":
-                    m.Platforms.showPlatforms();
+                    self.Platforms.showPlatforms();
                     break;
 
                 case "statsmodconfig":
-                    m.showConfig();
+                    self.showConfig();
                     break;
 
                 case "statsmodnotifications":
-                    m.Notifications.showNotifications();
+                    self.Notifications.showNotifications();
                     break;
 
                 case "statsmodshowsalesanalysis":
-                    m.Analysis.showSalesAnalysis();
+                    self.Analysis.showSalesAnalysis();
                     break;
                 case "":
                     GameManager.togglePause();
@@ -822,13 +868,13 @@ var InfoStatsModAbescoUG_Core = function() {
                     GameManager.togglePause();
                     break;
                 case "statsmodresetsettings":
-                     m.Config.resetStorage();
+                     self.Config.resetStorage();
                     break;
                 case "statsmodtogglefooter":
-                    m.Footer.toggleVisibilty();
+                    self.Footer.toggleVisibilty();
                     
                 case "statsmodtestquality":
-                    var q = m.Utils.getGameQuality(GameManager.company.gameLog.last());
+                    var q = self.Utils.getGameQuality(GameManager.company.gameLog.last());
                     console.log(q);
                 break;
                 default:
@@ -840,8 +886,8 @@ var InfoStatsModAbescoUG_Core = function() {
         Sound.click();
         try{
             {
-                var cols    = m.ReleasedGames.getDataListColumns();
-                var target  = $('#'+m.Config.idReleaseGamesConfigContainer);
+                var cols    = self.ReleasedGames.getDataListColumns();
+                var target  = $('#'+self.Config.idReleaseGamesConfigContainer);
                 var checkboxes = target.find('input[type=checkbox]');
                 
                 checkboxes.each(function(){
@@ -855,10 +901,10 @@ var InfoStatsModAbescoUG_Core = function() {
                     });
                 });
                 
-                m.Config.saveReleasedGamesConfig(cols);
+                self.Config.saveReleasedGamesConfig(cols);
             }
             {
-                var target          = $('#'+m.Config.idPlatformDetailsConfigContainer);
+                var target          = $('#'+self.Config.idPlatformDetailsConfigContainer);
                 var checkboxes      = target.find('input[type=checkbox]');
                 var selects         = target.find('select');
                 var optShowImages   = false;
@@ -890,12 +936,12 @@ var InfoStatsModAbescoUG_Core = function() {
                     }
                 });
                 
-                m.Config.savePlatformsConfig(optShowImages, optImageSize, optImageCols);                
+                self.Config.savePlatformsConfig(optShowImages, optImageSize, optImageCols);                
             }
-            $('#'+m.Config.idConfigStatusContainer).hide().text('Save successful').css({color:'green'}).fadeIn().delay(100).fadeOut();
+            $('#'+self.Config.idConfigStatusContainer).hide().text('Save successful').css({color:'green'}).fadeIn().delay(100).fadeOut();
         }
         catch(ex){
-            $('#'+m.Config.idConfigStatusContainer).hide().text('Error! '+ex.message).css({color:'red'}).fadeIn().delay(100).fadeOut();
+            $('#'+self.Config.idConfigStatusContainer).hide().text('Error! '+ex.message).css({color:'red'}).fadeIn().delay(100).fadeOut();
         }
     };         
 };
