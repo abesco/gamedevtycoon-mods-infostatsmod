@@ -5,8 +5,17 @@
 **to game sales and financial themes.**
 
 - Launch: 			December 09th, 2013
-- Last Update:  January 11th, 2014
+- Last Update:  January 16th, 2014
 
+#####ChangeLog Version 0.4.1#####
+
+**Last Update:  January 16th, 2014**
+
+- Completely revised modal windows. Now works well with lower resolutions, too.
+- Fixed problems when using the module with UltimateLib
+- Implemented notification for when a game release analysis is available (can be configured)
+- New feature allows to click on the game sales card to obtain detailed information about the game 
+- 
 #####ChangeLog Version 0.4.0#####
 
 **Last Update:  January 11th, 2014**
