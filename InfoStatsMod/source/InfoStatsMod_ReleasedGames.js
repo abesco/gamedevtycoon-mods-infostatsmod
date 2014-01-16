@@ -96,7 +96,7 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
             
 
         };
-    
+        
         // Event handler for ROW DoubleClicked
         m.tableRowDblClickedHandler = function() {
             var cell = $(this).find('td').first();
@@ -114,90 +114,107 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 return;        
             }
             else {
-                var $match = $('body').find('#StatsModGameDetailsModalWindowOverlay');
-                if ($match && $match.length > 0){
-                    $match.remove();
-                }
-                
-                $match = $('body').find('#StatsModGameDetailsModalWindowContainer');
-                if ($match && $match.length > 0){
-                    $match.remove();
-                }
-                
-                $match = $('#StatsModGameDetails').find('#StatsModGameDetailsModalWindowContainer');
-                if ($match && $match.length > 0){
-                    $match.remove();
-                }
-                            
-                // Show as popup
-                var centerX = (doc.width() / 2)     - 320;
-                var centerY = 10; //(doc.height() / 2)    - 240;
-                
-                var $h = core.getGameDetailElement(game); 
-                var $gameDetailsModalWindowOverlay   = $(document.createElement('div'));
-
-                $gameDetailsModalWindowOverlay.attr('id', 'StatsModGameDetailsModalWindowOverlay');
-                $gameDetailsModalWindowOverlay.width('100%').height('100%');
-
-                var $gameDetailsModalWindowContainer = core.Utils.createModalWindowAsDivElement('StatsModGameDetailsModalWindowContainer',640,480,function(){$gameDetailsModalWindowOverlay.hide();});
-
-                $gameDetailsModalWindowOverlay.css('zIndex','9010');
-                $gameDetailsModalWindowOverlay.css('background-color','black');
-                $gameDetailsModalWindowOverlay.css('opacity','0.5');
-                $gameDetailsModalWindowOverlay.css('position','absolute');
-                $gameDetailsModalWindowOverlay.css('top',0);
-                $gameDetailsModalWindowOverlay.css('left',0);
-
-                $gameDetailsModalWindowContainer.css('zIndex','9015');
-                $gameDetailsModalWindowContainer.css('border','2px solid #cccccc');
-                $gameDetailsModalWindowContainer.css('-webkit-box-shadow','0 0 5px#888');
-                $gameDetailsModalWindowContainer.css('box-shadow','0 0 5px #888');
-                $gameDetailsModalWindowContainer.css('background-color','white');
-                $gameDetailsModalWindowContainer.css('font-size','11px');
-                            
-                $gameDetailsModalWindowContainer.css('top',centerY);
-                $gameDetailsModalWindowContainer.css('left',centerX);
-                $gameDetailsModalWindowContainer.css('position','absolute');
+                m.showGameDetailAsWindow(game);
+            }
+        };
+        
+        m.showGameDetailAsWindow = function(game, pause){
+            var doc     = $(document);
             
-                $gameDetailsModalWindowContainer.append($h);
-            
-                $('body').append($gameDetailsModalWindowOverlay);
-                $('body').append($gameDetailsModalWindowContainer);
-                $gameDetailsModalWindowOverlay.stop().fadeIn('slow');
-                $gameDetailsModalWindowContainer.stop().fadeIn('slow');
-                
-                $( "#gamedetails-tabs" ).tabs({
-                    select: function(event, ui){
-                        // Index of the selected tab
-                        m.selectedTabIndex = ui.index; // event.options.selected;
-                        $("#InfoStatsModGameSalesWeeklyFlotGraphTooltip").hide();
-                    },
-                    selected: m.selectedTabIndex
-                });        
-                
-                // Prepare the tabs widget
-                var doc                 = $(document);
-                var docWidth            = doc.width();
-                var docHeight           = doc.height();
-                var modalWindowWidth    = parseInt(docWidth * 0.9);
-                var modalWindowHeight   = parseInt(docHeight * 0.9);
-                var wrapperHeight       = modalWindowHeight - 10;
-                var tableHeight         = wrapperHeight     - 120;
-                var wrapperWidth        = modalWindowWidth  - 10;
-                var tableWidth          = wrapperWidth      - 60;
-
-                $( "#gamedetails-tabs" ).height(tableHeight - 180);
-                // $( "#gamedetails-tabs" ).css('overflow','auto');
-                
-                // auto-select proper tab (i.e. the last clicked tab)
-                $('#gamedetails-tabs-' + (m.selectedTabIndex+1)).click();
-                
-                // Crate the engine specs data list
-                m.createEngineSpecsDataList();         
-
+            if(pause && pause == true){
+                if(!GameManager.isPaused()){
+                    GameManager.togglePause();
+                }
             }
             
+            var $match = $('body').find('#StatsModGameDetailsModalWindowOverlay');
+            if ($match && $match.length > 0){
+                $match.remove();
+            }
             
+            $match = $('body').find('#StatsModGameDetailsModalWindowContainer');
+            if ($match && $match.length > 0){
+                $match.remove();
+            }
+            
+            $match = $('#StatsModGameDetails').find('#StatsModGameDetailsModalWindowContainer');
+            if ($match && $match.length > 0){
+                $match.remove();
+            }
+                        
+            var docWidth            = doc.width();
+            var docHeight           = doc.height();
+
+            
+            var modalWindowWidth    = parseInt(docWidth * 0.9);
+            var modalWindowHeight   = parseInt(docHeight * 0.9);
+            var wrapperHeight       = modalWindowHeight - 10;
+            var tableHeight         = wrapperHeight     - 130;
+            var wrapperWidth        = modalWindowWidth  - 10;
+            var tableWidth          = wrapperWidth      - 60;
+                        
+            var centerX = (docWidth / 2)  - 320;
+            var centerY = (docHeight / 2) - (modalWindowHeight/2);
+
+            var $h = core.getGameDetailElement(game); 
+            var $gameDetailsModalWindowOverlay   = $(document.createElement('div'));
+
+            $gameDetailsModalWindowOverlay.attr('id', 'StatsModGameDetailsModalWindowOverlay');
+            $gameDetailsModalWindowOverlay.width('100%').height('100%');
+
+            var $gameDetailsModalWindowContainer = core.Utils.createModalWindowAsDivElement('StatsModGameDetailsModalWindowContainer',640,modalWindowHeight,function(){
+                $gameDetailsModalWindowOverlay.hide();
+                
+                if(pause && pause == true){
+                    if(GameManager.isPaused()){
+                        GameManager.togglePause();
+                    }
+                }                
+            });
+
+            $gameDetailsModalWindowOverlay.css('zIndex','9010');
+            $gameDetailsModalWindowOverlay.css('background-color','black');
+            $gameDetailsModalWindowOverlay.css('opacity','0.5');
+            $gameDetailsModalWindowOverlay.css('position','absolute');
+            $gameDetailsModalWindowOverlay.css('top',0);
+            $gameDetailsModalWindowOverlay.css('left',0);
+
+            $gameDetailsModalWindowContainer.css('zIndex','9015');
+            $gameDetailsModalWindowContainer.css('border','2px solid #cccccc');
+            $gameDetailsModalWindowContainer.css('-webkit-box-shadow','0 0 5px#888');
+            $gameDetailsModalWindowContainer.css('box-shadow','0 0 5px #888');
+            $gameDetailsModalWindowContainer.css('background-color','white');
+            $gameDetailsModalWindowContainer.css('font-size','11px');
+                        
+            $gameDetailsModalWindowContainer.css('top',centerY);
+            $gameDetailsModalWindowContainer.css('left',centerX);
+            $gameDetailsModalWindowContainer.css('position','absolute');
+        
+            $gameDetailsModalWindowContainer.append($h);
+        
+            $('body').append($gameDetailsModalWindowOverlay);
+            $('body').append($gameDetailsModalWindowContainer);
+            $gameDetailsModalWindowOverlay.stop().fadeIn('slow');
+            $gameDetailsModalWindowContainer.stop().fadeIn('slow');
+            
+            $( "#gamedetails-tabs" ).tabs({
+                select: function(event, ui){
+                    // Index of the selected tab
+                    m.selectedTabIndex = ui.index; // event.options.selected;
+                    $("#InfoStatsModGameSalesWeeklyFlotGraphTooltip").hide();
+                },
+                selected: m.selectedTabIndex
+            });        
+
+
+            $( "#gamedetails-tabs" ).height(tableHeight - 180);
+            // $( "#gamedetails-tabs" ).css('overflow','auto');
+            
+            // auto-select proper tab (i.e. the last clicked tab)
+            $('#gamedetails-tabs-' + (m.selectedTabIndex+1)).click();
+            
+            // Crate the engine specs data list
+            m.createEngineSpecsDataList();              
         };
         
         // Event handler for CELL Clicked
