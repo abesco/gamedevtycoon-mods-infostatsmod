@@ -2,7 +2,7 @@
 * Name:                 InfoStatsMod
 * Class:                InfoStatsModAbescoUG_ReleasedGames   
 * Description:          Class for handling and displaying "Released Games" info & stats
-* Copyright:            © 2013 Francesco Abbattista
+* Copyright:            Â© 2013 Francesco Abbattista
 * Url:                  http://www.abesco.de/
 */
 
@@ -378,7 +378,7 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
             }
             
             return [{name:'Id', type:'string', width:0, align:'left', visible:true},
-                    {name:'Title', type:'string', width:150, align:'left', visible:true},
+                    {name:'Title', type:'string', width:300, align:'left', visible:true},
                     {name:'Size', type:'string', width:80, align:'center', visible:true},
                     {name:'Score', type:'float', width:50, align:'right', visible:true},
                     {name:'DP', type:'integer', width:50, align:'right', visible:true},
@@ -390,12 +390,13 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                     // --> {name:'Total Income', type:'integer', width:90, align:'right', visible:true},
                     {name:'Costs', type:'integer', width:90, align:'right', visible:true},
                     {name:'Profit', type:'integer', width:90, align:'right', visible:true},
+                    {name:'Profit Margin', type:'float', width:90, align:'right', visible:true},
                     // --> {name:'Total Profit', type:'integer', width:90, align:'right', visible:true},
                     {name:'Fans', type:'integer', width:90, align:'right', visible:true},
                     {name:'Hype', type:'integer', width:40, align:'right', visible:true},
                     {name:'Rank', type:'integer', width:40, align:'right', visible:true},
                     {name:'Release Date', type:'date', width:90, align:'center', visible:true},
-                    {name:'Sequel', type:'string', width:100, align:'left', visible:true},
+                    {name:'Sequel', type:'string', width:300, align:'left', visible:true},
                     {name:'Topic', type:'string', width:100, align:'left', visible:true},
                     {name:'Genre', type:'string', width:100, align:'left', visible:true},
                     {name:'Audience', type:'string', width:100, align:'left', visible:true},
@@ -461,6 +462,9 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
 
                 case 'Profit':
                 return core.Utils.formatMoney(game.revenue - game.costs, 0, ".", ".");
+
+                case 'Profit Margin':
+                return ( ((game.revenue - game.costs) / game.revenue)*100 ).toFixed(2) + '%';
 
                 case 'Hype':
                 return core.Utils.formatMoney(game.hypePoints, 0, ",",".");

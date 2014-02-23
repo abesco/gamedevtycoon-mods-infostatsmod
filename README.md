@@ -27,7 +27,7 @@
 - Fixed problems when using the module with UltimateLib
 - Implemented notification for when a game release analysis is available (can be configured)
 - New feature allows to click on the game sales card to obtain detailed information about the game 
-- 
+
 #####ChangeLog Version 0.4.0#####
 
 **Last Update:  January 11th, 2014**
