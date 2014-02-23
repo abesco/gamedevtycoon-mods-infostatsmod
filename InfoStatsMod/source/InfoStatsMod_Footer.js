@@ -62,13 +62,13 @@ var InfoStatsModAbescoUG_Footer = function(infoStatsModCore) {
             var bestGame = core.getBestGame();
             var isLoss   = bestGame == null ? 0 : bestGame.game.revenue - bestGame.game.costs < 0;
            
-            var strContent      = '<div style="text-align:center">';
-            var averageScore    = bestGame.game.reviews.average(function (a) { return a.score })
+            var strContent      = '<div style="text-align:center; font-size:10pt; vertical-align:middle">';
+            var averageScore    = bestGame.game.reviews.average(function(a) { return a.score; });
             var strScore        = core.Utils.formatMoney(averageScore, 2, ',', '.');
             var numScore        = new Number(averageScore);
             var gameDate        = GameManager.company.getDate(company.currentWeek);
             
-            strContent += curDate + " - Revenues: " + (revenues == "NaN" ? "n.a." : revenues)  + " - Costs: " + (costs == "NaN" ? "n.a." : costs) + " - Profit: "+ (profit == "NaN" ? "n.a." : profit);
+            strContent += curDate + " - Game Revenues: " + (revenues == "NaN" ? "n.a." : revenues) + " - Game Costs: " + (costs == "NaN" ? "n.a." : costs) + " - Game Profits: " + (profit == "NaN" ? "n.a." : profit);
              
             var quickColorTableScore  = [];
             var quickColorTableProfit = ['FF2222','22FF22'];
@@ -79,7 +79,7 @@ var InfoStatsModAbescoUG_Footer = function(infoStatsModCore) {
                
             if (bestGame != null){
                 
-                var colorSpan       = '<span style="color:#{0}">{1}</span>'
+                var colorSpan       = '<span style="color:#{0}">{1}</span>';
                 var scoreColored    = colorSpan.format(quickColorTableScore[numScore.truncateDecimals(0)], strScore);
                 var profitColored   = colorSpan.format(quickColorTableProfit[isLoss ? 0 : 1], UI.getShortNumberString(bestGame.profit));
                 

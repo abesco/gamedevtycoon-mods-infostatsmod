@@ -87,26 +87,37 @@ var InfoStatsModAbescoUG_Core = function() {
         // GDT.on(GDT.eventKeys.ui.contextMenuShowing, contextMenuShowing);
         // GDT.on(GDT.eventKeys.ui.beforeShowingNotification, contextMenuBeforeShow);
         GDT.on(GDT.eventKeys.gameplay.weekProceeded, self.weekProceeded);
-                  
+
+        (function() {
+            var proxied = UI.salesContainerClick;
+            UI.salesContainerClick = function(event, id) {
+                proxied.apply(this, arguments);
+
+                if (self.Utils.gameExists(id)) {
+                    // this is a game
+                    var game = self.Utils.getGame(id);
+                    self.showCurrentGameDetails(game);
+                }
+            };
+
+        })();
+
         (function() {
             var proxied = UI.addSalesCard;
                 UI.addSalesCard = function (a, b, c, d, e, f, g, h, i, j, k, l) {
                     console.log("addSalesCard");
                     proxied.apply( this, arguments );
 
-                    var cards = $('#gameSalesContainer').find('.gameSalesCard');
-                    cards.css({cursor:'pointer'});
-                    cards.click(function(e){
-                        self.showCurrentGameDetails(game);
-                    });
+                    $('#gameSalesContainer').find('.gameSalesCard').css({ cursor: 'pointer' });
 
                     var game = self.Utils.getGame(a);
-
                     var config = self.Config.loadNotifications();
                     var showReleaseDetailAvailableNotifications  = config != null ? config.showReleaseDetailAvailableNotifications : null; 
                                 
                     if(showReleaseDetailAvailableNotifications){
-                        GameManager.company.notifications.push(self.Notifications.getReleaseDetailsAvailNotification(game));
+                        if (self.Utils.isDefined(game)) {
+                            GameManager.company.notifications.push(self.Notifications.getReleaseDetailsAvailNotification(game));
+                        }
                     }
                 };
         })();
@@ -164,10 +175,10 @@ var InfoStatsModAbescoUG_Core = function() {
             }
             */
 
-            if (self.Utils.isDefined(bestGame.game)){
+            if (self.Utils.isDefined(bestGame) && self.Utils.isDefined(bestGame.game)){
                 // We have a best game, check if it's different than our last best game
 
-                if (!self.Utils.isDefined(self.LastBestGame) || (self.LastBestGame != bestGame.game) && bestGame.game == lastGame){
+                if (!self.Utils.isDefined(self.LastBestGame) || (self.Utils.isDefined(self.LastBestGame) && self.LastBestGame.game != bestGame.game) && bestGame.game == lastGame){
                     // Now we know it's a released and reviewed game since getBestGame already filters it!
                     var profitOld = self.Utils.isDefined(self.LastBestGame) ? self.LastBestGame.revenue - self.LastBestGame.costs : 0;
                     var profitNew = bestGame.revenue - bestGame.costs;
@@ -178,7 +189,7 @@ var InfoStatsModAbescoUG_Core = function() {
                     // If we want to show Best Game Notification, we do it here by pushing a notification into pipeline
                     if (showBestGameNotifications) {    
                         // We need to check if this game has been already nominated as best game
-                        if(!anotherRecord){
+                        if (!anotherRecord) {
                             GameManager.company.notifications.push(self.Notifications.getBestGameNotification());
                         }
                         else {
@@ -499,7 +510,7 @@ var InfoStatsModAbescoUG_Core = function() {
             "background-color": "#2222ff",
             "color": "#ffffff",
             opacity: 0.80,
-            zIndex: 9100,
+            zIndex: 9100
         }).appendTo("body");
 
         
@@ -648,7 +659,7 @@ var InfoStatsModAbescoUG_Core = function() {
                 
                 selectcell1.append('Image size: ');                      
 
-                select.attr({size:1, name:'infostatsmod-platforms-config-imagesize', class:'', width:100});
+                select.attr({size:1, name:'infostatsmod-platforms-config-imagesize', width:100}).attr('class', '');
                 select.append('<option name="" value="small"'+(imageSize=='small'?' selected':'')+'>small</option>');
                 select.append('<option name="" value="medium"'+(imageSize=='medium'?' selected':'')+'>medium</option>');
                 select.append('<option name="" value="large"'+(imageSize=='large'?' selected':'')+'>large</option>');
@@ -675,7 +686,7 @@ var InfoStatsModAbescoUG_Core = function() {
                 
                 selectcell1.append('Columns: '); 
                 
-                select.attr({size:1, name:'infostatsmod-platforms-config-imagecols', class:'', width:100});
+                select.attr({size:1, name:'infostatsmod-platforms-config-imagecols', width:100}).attr('class', '');
                 select.append('<option name="" value="1"'+(imageCols=='1'?' selected':'')+'>1</option>');
                 select.append('<option name="" value="2"'+(imageCols=='2'?' selected':'')+'>2</option>');
                 select.append('<option name="" value="3"'+(imageCols=='3'?' selected':'')+'>3</option>');
@@ -736,20 +747,28 @@ var InfoStatsModAbescoUG_Core = function() {
         return value;
     };
     
-    this.getGamesWithHighestScore = function() {
+    this.getGamesWithHighestScore = function () {
+
         var games = GameManager.company.gameLog;
         if (games == null || games.length < 1){
             return 0;
-        }  
-        
+        }
+
+
         var values   = [];
         var value    = null;
-        for(var i = 0; i < games.length; i++){
-            if(value == null || games[i].score >= value.score){
+        for (var i = 0; i < games.length; i++) {
+
+            var avgScore1 = games[i].reviews.average(function (a) { return a.score; });
+            var avgScore2 = value!= null ? value.reviews.average(function (a) { return a.score; }) : 0;
+
+            if (avgScore1 >= avgScore2) {
+                value = games[i];
                 values.push(games[i]);
             }
         }
-        
+
+
         return values;       
     };
     
@@ -758,19 +777,23 @@ var InfoStatsModAbescoUG_Core = function() {
         if ( games == null || games.length < 1){
             return null;
         }
-        
+
+
         var value   = null;
         var revenue = 0;
         var costs   = 0;
         var profit  = 0;
         var maxprofit = 0;
-        
-        for(var i = 0; i < games.length; i++){
+        var specialScore = 0;
+
+        for (var i = 0; i < games.length; i++) {
             revenue = games[i].revenue;
             costs   = games[i].costs;
             profit  = revenue - costs;
             
-            if(value == null || profit > maxprofit){
+            var specScore = games[i].reviews.average(function (a) { return a.score; }) * profit;
+
+            if (value == null || specScore > specialScore) {
                 value = games[i];
                 maxprofit = profit;
             }
@@ -778,7 +801,7 @@ var InfoStatsModAbescoUG_Core = function() {
         
         var canBestGameBeShown = self.Utils.hasGameBeenReviewed(value);
 
-        return {game: canBestGameBeShown ? value : self.LastBestGame, profit: maxprofit};
+        return { game: canBestGameBeShown ? value : self.LastBestGame, profit: maxprofit };
     };
             
     // Quick implementation for StatsMod ModalWindow Open and Close Events

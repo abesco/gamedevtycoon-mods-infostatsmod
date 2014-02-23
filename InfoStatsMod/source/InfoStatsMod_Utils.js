@@ -249,7 +249,7 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
             var img          = $(document.createElement('img')).attr('src',gamePlatformImages[i]).attr('title', gamePlatformCompanies[i]+' '+gamePlatformNames[i]);
             var namesDiv     = $(document.createElement('div')).css({width:'100%', textAlign:'center', position:'relative', top:'-2px'});
             
-            namesDiv.css({backgroundColor:'#333333', border:'1 px solid #000000', color:'#ffffff', opacity:'0.75'});
+            namesDiv.css({backgroundColor:'#333333', border:'1px solid #000000', color:'#ffffff', opacity:'0.75'});
             img.css('-webkit-transform','scale('+imgScale+')');            
             img.attr({width:imgSize, height:imgSize});
                                            
@@ -435,7 +435,11 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
         }                    
         return;
     };
-    
+
+    this.gameExists = function(id) {
+        return this.isDefined(this.getGame(id));
+    };
+
     /**
      * @public
      * @function getGameQuality
@@ -443,7 +447,11 @@ var InfoStatsModAbescoUG_Utils = function(infoStatsModCore){
      * @param {Game} game The game for which you want to acquire the game quality factor
      * @returns {float} A number indicating the game quality
     */             
-    this.getGameQuality = function(g){
+    this.getGameQuality = function (g) {
+        if (!this.isDefined(g)) {
+            return {quality: 0, optimalRatio: 0, tdRatio: 0};
+        }
+
         var pi = GameManager.company.gameLog.indexOf(g);
         var p  = pi > 0 ? pi - 1 : pi ? GameManager.company.gameLog[pi - 1] : null;
         

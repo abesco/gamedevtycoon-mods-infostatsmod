@@ -239,11 +239,17 @@
     };
     
     ModalWindow.prototype.getWidth = function() {
-        return parseInt(this.wrapper.css('width').replace('px','').replace('%',''));
+        if(this.wrapper){
+            return parseInt(this.wrapper.css('width').replace('px','').replace('%',''));
+        }
+        return 0;
     };
 
     ModalWindow.prototype.getHeight= function() {
-        return parseInt(this.wrapper.css('height').replace('px','').replace('%',''));
+        if(this.wrapper){
+            return parseInt(this.wrapper.css('height').replace('px','').replace('%',''));
+        }
+        return 0;
     };
 
     // jQuery plugin wrapper

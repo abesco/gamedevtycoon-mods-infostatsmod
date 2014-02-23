@@ -5,7 +5,19 @@
 **to game sales and financial themes.**
 
 - Launch: 			December 09th, 2013
-- Last Update:  January 16th, 2014
+- Last Update:  February 23rd, 2014
+
+#####ChangeLog Version 0.4.2#####
+
+**Last Update:  February 23rd, 2014**
+
+- Fixed errors in conjunction with the GameQuality calculation
+- Fixed calculation of "Best Game Ever"
+- Fixed annoying "Best Game Ever" notifications showing every week
+- Fixed error when releasing a custom platform
+- Fixed error when clicking on sales card of custom console
+- Fixed erroneous height of engine specs list on lower resolutions
+
 
 #####ChangeLog Version 0.4.1#####
 

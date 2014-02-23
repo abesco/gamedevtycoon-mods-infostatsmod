@@ -5,13 +5,17 @@
 - Project Information
     - Name:         InfoStatsMod
     - Description:  Provides detailed information and statistics to games released, provides charts and analysis to game sales and financial themes.
-    - Copyright:    © 2013 Francesco Abbattista
+    - Copyright:    © 2013, 2014 Francesco Abbattista
     - Notes:        Originally inspired and partially based on techniques from the expansion modules: Expansion Pack and CheatMod.
     - Credits:      Big thanks and respect goes out to DzjengisKhan, LineLiar, kristof1104, SirEverard, JayCheetah, Charlie and of course PatrickKlug. ExpansionPack for GDT by DzjengisKhan, LineLiar. CheatMod      for GDT by kristof1104. Thanks for test and assistance goes out to: Haxor
 - Version Information
-    - Latest:       0.4.0
+    - Latest:       0.4.2
     - Launch:       December 09th, 2013
-    - Last Update:  January 11th, 2014
+    - Last Update:  February 23rd, 2014
+
+**Using the following additional media**
+- 
+bell-ringing-05.mp3 (c) soundjay. In accordance to the terms of use, see: http://www.soundjay.com/tos.html
 
 **Using the following additional scripts:**
 

@@ -6,3 +6,4 @@ Haxor:
 - And, can You make stats for CustomConsole, their sales, profit etc.
 - And, maybe You can do that with CustomComputers too?
 - And, yeah one stupid graphic bug, in consoles info, just images are out of frame.
+

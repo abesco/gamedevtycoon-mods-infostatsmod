@@ -105,7 +105,7 @@ var InfoStatsModAbescoUG_Analysis = function(infoStatsModCore) {
                 var game = GameManager.company.gameLog[i];
                 var revenue = isNaN(game.revenue) ? 0 : game.revenue;
                 var averageScore = game.reviews.average(function (a) {
-                        return a.score
+                    return a.score;
                 });
         
                 var $divRatingStars     = core.Utils.getRatingStarsAsDivElement(averageScore, false, 1);
@@ -142,8 +142,8 @@ var InfoStatsModAbescoUG_Analysis = function(infoStatsModCore) {
             var game            = GameManager.company.gameLog[i];
             var revenue         = isNaN(game.revenue) ? 0 : game.revenue;
             var averageScore    = game.reviews.average(function (a) {
-                                        return a.score
-                                  });
+                return a.score;
+            });
                 
             var releaseWeekReal = game.releaseWeek;
             var log             = game.salesCashLog;
@@ -172,7 +172,7 @@ var InfoStatsModAbescoUG_Analysis = function(infoStatsModCore) {
             "background-color": "#2222ff",
             "color": "#ffffff",
             opacity: 0.80,
-            zIndex: 9100,
+            zIndex: 9100
         }).appendTo("body");
 
         

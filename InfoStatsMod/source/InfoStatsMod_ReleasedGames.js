@@ -248,20 +248,20 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
             var doc                 = $(document);
             var docWidth            = doc.width();
             var docHeight           = doc.height();
-            var modalWindowWidth    = core.ModalWindowApi.getWidth()
-            var modalWindowHeight   = core.ModalWindowApi.getHeight();
+            var modalWindowWidth    = core.ModalWindowApi.getWidth();
+            var modalWindowHeight   = docHeight * 0.8; //core.ModalWindowApi.getHeight();
             var wrapperHeight       = modalWindowHeight - 10;
             var tableHeight         = wrapperHeight     - 420;
             var wrapperWidth        = modalWindowWidth  - 10;
             var tableWidth          = wrapperWidth      - 60;
             
             if (docWidth >= 1550){
-                tableHeight         = wrapperHeight     - 500;
+                tableHeight         = wrapperHeight - 400;
             }
             else {
-                tableHeight         = wrapperHeight     - 420;    
+                tableHeight         = wrapperHeight     - 380;    
             }
-                            
+
             $('#InfoStatsModShowReleasedGamesEngineSpecsContainer').datalist({
                     caption                 : '', 
                     colWidths               : colWidths,
@@ -279,7 +279,7 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                     minColWidth             : 50,
                     minWidthAuto            : false,
                     minWidth                : 50,
-                    minHeight               : 400,
+                    minHeight               : tableHeight,
                     addTitles               : true,
                     cellAlignments          : colAligns,
                     headAlignments          : colAligns

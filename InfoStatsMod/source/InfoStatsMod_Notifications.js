@@ -28,8 +28,8 @@ var InfoStatsModAbescoUG_Notifications = function(infoStatsModCore){
         return new Notification("Company's Best Game".localize(), msg);
     };
     
-    this.getReleaseDetailsAvailNotification = function(game) {
-        var averageScore    = game.reviews.average(function (a) { return a.score })
+    this.getReleaseDetailsAvailNotification = function (game) {
+        var averageScore    = game.reviews.average(function (a) { return a.score; });
         var strScore        = core.Utils.formatMoney(averageScore, 2, ',', '.');
 
         var msg = "Game release details and sales analysis for {0} are now available in InfoStatsMod.{1}During sales you can also click on the game's sales card to open a detailed view of the game.".localize().format(game.title,'\n\n');
