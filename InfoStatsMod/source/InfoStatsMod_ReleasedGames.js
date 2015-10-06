@@ -74,8 +74,8 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 
                 // Prepare the tabs widget
                 var doc                 = $(document);
-                var docWidth            = doc.width();
-                var docHeight           = doc.height();
+				var docWidth = document.body.clientWidth;
+				var docHeight = document.body.clientHeight;
                 var modalWindowWidth    = parseInt(docWidth * 0.9);
                 var modalWindowHeight   = parseInt(docHeight * 0.9);
                 var wrapperHeight       = modalWindowHeight - 10;
@@ -142,8 +142,8 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 $match.remove();
             }
                         
-            var docWidth            = doc.width();
-            var docHeight           = doc.height();
+			var docWidth = document.body.clientWidth;
+			var docHeight = document.body.clientHeight;
 
             
             var modalWindowWidth    = parseInt(docWidth * 0.9);
@@ -246,10 +246,10 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
             });
             
             var doc                 = $(document);
-            var docWidth            = doc.width();
-            var docHeight           = doc.height();
+			var docWidth = document.body.clientWidth;
+			var docHeight = document.body.clientHeight;
             var modalWindowWidth    = core.ModalWindowApi.getWidth();
-            var modalWindowHeight   = docHeight * 0.8; //core.ModalWindowApi.getHeight();
+			var modalWindowHeight = parseInt(docHeight * 0.9);
             var wrapperHeight       = modalWindowHeight - 10;
             var tableHeight         = wrapperHeight     - 420;
             var wrapperWidth        = modalWindowWidth  - 10;
@@ -259,7 +259,7 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 tableHeight         = wrapperHeight - 400;
             }
             else {
-                tableHeight         = wrapperHeight     - 380;    
+                tableHeight         = wrapperHeight - 380;    
             }
 
             $('#InfoStatsModShowReleasedGamesEngineSpecsContainer').datalist({
@@ -294,23 +294,18 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
 
             if(GameManager.company.gameLog.length > 0)
             {
-                
+
                 var doc                 = $(document);
-                var docWidth            = doc.width();
-                var docHeight           = doc.height();
+				var docWidth = document.body.clientWidth;
+				var docHeight = document.body.clientHeight;
                 var modalWindowWidth    = parseInt(docWidth * 0.9);
                 var modalWindowHeight   = parseInt(docHeight * 0.9);
                 var wrapperHeight       = modalWindowHeight - 10;
-                var tableHeight         = wrapperHeight     - 120;
+                var tableHeight         = wrapperHeight     - 110;
                 var wrapperWidth        = modalWindowWidth  - 10;
-                var tableWidth          = wrapperWidth      - 60;
+                var tableWidth          = wrapperWidth      - 590;
                 
-                if (docWidth >= 1550){
-                }
-                else {
-                    
-                }
-                
+
                 core.ModalWindowApi.resize("90%", '90%');
                 
                 var columns = m.getDataListColumns();
@@ -329,9 +324,9 @@ var InfoStatsModAbescoUG_ReleasedGames = function(infoStatsModCore) {
                 $('#StatsModModalWindowWrapper').height(wrapperHeight);
                 $('#StatsModShowReleaseGamesContainer').datalist({
                         caption                 : '', 
-                        colWidths               : colWidths,
+						colWidths               : colWidths,
                         height                  : tableHeight, 
-                        width                   : docWidth >= 1550 ? 840 : tableWidth, 
+                        width                   : tableWidth, //docWidth >= 1550 ? 840 : tableWidth, 
                         useAlternateRowStyle    : true, 
                         alternateRowStyleClass  : 'statsmod-ui-state-active',
                         sortable                : true,

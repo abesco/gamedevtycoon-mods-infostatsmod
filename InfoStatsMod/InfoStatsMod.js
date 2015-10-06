@@ -16,7 +16,7 @@
                        path + 'libs/modal.js', 
                        path + 'libs/footer.js', 
                        path + 'libs/image-picker.js', 
-                       path + 'libs/flot.js', 
+                       path + 'libs/flot/jquery.flot.js', 
                        path + 'source/source.js'];
 
         $.each(jslibs, function(key, value){
