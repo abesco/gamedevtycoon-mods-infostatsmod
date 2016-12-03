@@ -9,10 +9,10 @@
  * </div>
  * <div id="modal-overlay" />
  */
- 
+
  /* Licensed under the terms of CC 3.0 */
  /* http://creativecommons.org/licenses/by-sa/3.0/ */
- 
+
  (function( $, undefined ) {
 
     'use strict';
@@ -58,14 +58,14 @@
             maxWidth: this.opts.maxWidth,
             height: this.opts.height,
             maxHeight: this.opts.maxHeight,
-            zIndex: this.opts.zIndex ? this.opts.zIndex : 0, 
+            zIndex: this.opts.zIndex ? this.opts.zIndex : 0,
             display: 'none'
         });
 
         if (this.opts.id) {
             this.wrapper.attr('id', this.opts.id);
         }
-        
+
         this.close = $('<span class="statsMod-modal-close" data-' + this.opts.namespace + '-close>Close</span>').appendTo(this.wrapper);
         this.content = $('<div class="statsMod-modal-content">').appendTo(this.wrapper);
 
@@ -116,9 +116,9 @@
     };
 
     ModalWindow.prototype.openJQ = function( element, callback) {
-        this.open(element.html());   
+        this.open(element.html());
     };
-    
+
     /**
      * Open
      * @description Open the modal window
@@ -155,7 +155,7 @@
             .add(this.overlay)
             .stop()
             .fadeIn();
-            
+
         this.isOpen = true;
 
         // Add content to window
@@ -163,7 +163,7 @@
             this.update(content);
         }
 
-        
+
         // Callbacks
         if ( this.opts.onopen ) {
             this.opts.onopen.call(this);
@@ -237,7 +237,7 @@
             callback.call(this);
         }
     };
-    
+
     ModalWindow.prototype.getWidth = function() {
         if(this.wrapper){
             return parseInt(this.wrapper.css('width').replace('px','').replace('%',''));
